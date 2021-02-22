@@ -5,7 +5,7 @@ function StateMachine:init(states)
 		render = function() end,
 		update = function() end,
 		processAI = function() end,
-		enter = function() end,
+		-- enter = function() end,
 		exit = function() end
 	}
 	self.states = states or {} -- [name] -> [function that returns states]
@@ -14,9 +14,9 @@ end
 
 function StateMachine:change(stateName, enterParams)
 	assert(self.states[stateName]) -- state must exist!
-	self.current:exit()
+	--self.current:exit()
 	self.current = self.states[stateName]()
-	self.current:enter(enterParams)
+	--self.current:enter(enterParams)
 end
 
 function StateMachine:update(dt)
