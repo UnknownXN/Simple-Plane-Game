@@ -20,9 +20,7 @@ function love.load()
     playerx = VIRTUAL_WIDTH / 2 
     playerdy = 0
     playerdx = 0
-    gStateMachine = {
-        ['sta
-    }
+
     -- statemachine implementation
 
     love.keyboard.keypressed = {}
