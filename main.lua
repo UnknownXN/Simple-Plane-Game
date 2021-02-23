@@ -16,13 +16,15 @@ function love.load()
 
     backgroundWidth, backgroundHeight = background:getDimensions()
 
-
     -- statemachine implementation
     gStateMachine = StateMachine{
         ['start'] = function () return StartState() end,
         ['play'] = function () return PlayState() end
     }
     gStateMachine:change('start')
+
+    
+    
     love.keyboard.keypressed = {}
 end
 function love.update(dt)

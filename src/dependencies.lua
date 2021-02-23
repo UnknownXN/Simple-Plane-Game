@@ -10,6 +10,14 @@ require 'src/States/BaseState'
 require 'src/States/PlayState'
 require 'src/States/StartState'
 
+require 'src/Player'
+require 'src/Bullet'
+require 'src/World'
+
+require 'src/States/PlayerStates/PlayerFlyState'
+require 'src/States/PlayerStates/PlayerReloadState'
+require 'src/States/PlayerStates/BasePlayerState'
+
 background = love.graphics.newImage('graphics/space.png')
 
 gTextures = {
