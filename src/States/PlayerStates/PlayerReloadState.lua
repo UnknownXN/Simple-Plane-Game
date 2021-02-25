@@ -1,7 +1,10 @@
 PlayerReloadState = Class{__includes = BasePlayerState}
-function PlayerReloadState:init(player)
+function PlayerReloadState:init(player, world)
     self.player = player
+    self.world = world
+    
     self.stateTimer = 0
+
     
 end
 function PlayerReloadState:update(dt)

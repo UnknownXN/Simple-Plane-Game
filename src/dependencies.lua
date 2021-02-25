@@ -13,6 +13,7 @@ require 'src/States/StartState'
 require 'src/Player'
 require 'src/Bullet'
 require 'src/World'
+require 'src/Asteroid'
 
 require 'src/States/PlayerStates/PlayerFlyState'
 require 'src/States/PlayerStates/PlayerReloadState'

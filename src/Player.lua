@@ -1,6 +1,6 @@
 Player = Class{}
 
-function Player:init(World)
+function Player:init()
     self.x = VIRTUAL_WIDTH / 2 - 42
     self.y = VIRTUAL_HEIGHT * 5 / 6
 
@@ -13,7 +13,7 @@ function Player:init(World)
     self.ammo = 5
 
     -- reference to other things in the world
-    self.world = World
+
     
 end
 

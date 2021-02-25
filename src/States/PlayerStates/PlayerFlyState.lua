@@ -1,15 +1,15 @@
 PlayerFlyState = Class{__includes = BasePlayerState}
 
-function PlayerFlyState:init(player)
+function PlayerFlyState:init(player, world)
     self.player = player
-    
+    self.world = world
 end
 function PlayerFlyState:update(dt)
     BaseUpdateMovement(dt, self.player)
 
     if love.keyboard.wasPressed('space') then
         -- inserts into the bullets table in the world and instance of a bullet
-        table.insert(self.player.world.bullets, Bullet(self.player))
+        table.insert(self.world.bullets, Bullet(self.player))
 
         -- substracts ammo by 1
         self.player.ammo = self.player.ammo - 1
@@ -24,4 +24,5 @@ function PlayerFlyState:update(dt)
 end
 function PlayerFlyState:render()
     self.player:render()
+    --love.graphics.rectangle('line', self.player.x, self.player.y, self.player.width, self.player.height)
 end

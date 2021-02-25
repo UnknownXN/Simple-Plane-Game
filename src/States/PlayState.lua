@@ -4,15 +4,16 @@ function PlayState:init()
     self.bullets = {}
 
 
-    self.world = World()
+   
     
-    self.player = Player(self.world)
-
+    self.player = Player()
+    self.world = World(self.player)
+    
     self.ammo = 5
 
     PlayerStates = StateMachine{
-        ['fly'] = function () return PlayerFlyState(self.player) end,
-        ['reload'] = function () return PlayerReloadState(self.player) end
+        ['fly'] = function () return PlayerFlyState(self.player, self.world) end,
+        ['reload'] = function () return PlayerReloadState(self.player, self.world) end
     }
 
     PlayerStates:change('fly')
