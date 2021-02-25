@@ -8,10 +8,14 @@ function PlayState:init()
     
     self.player = Player(self.world)
 
-    -- PlayerStates = StateMachine{
-    --     ['fly'] = function () return PlayerFlyState() end,
-    --     ['reload'] = function () return PlayerReloadState() end
-    -- }
+    self.ammo = 5
+
+    PlayerStates = StateMachine{
+        ['fly'] = function () return PlayerFlyState(self.player) end,
+        ['reload'] = function () return PlayerReloadState(self.player) end
+    }
+
+    PlayerStates:change('fly')
 
 
     -- table of bullets, could be added to world instead, But since it comes from the player,
@@ -21,12 +25,14 @@ function PlayState:init()
 end
 
 function PlayState:update(dt)
-    self.player:update(dt)
+    --self.player:update(dt)
+    PlayerStates:update(dt)
     self.world:update(dt)
 
 end
 
 function PlayState:render()
-    self.player:render()
+    -- self.player:render()
+    PlayerStates:render()
     self.world:render()
 end

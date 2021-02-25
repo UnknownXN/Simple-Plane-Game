@@ -16,7 +16,6 @@ function World:update(dt)
             -- self.bullets[i] = nil
             --heard that this might cause wierd behaviour, but it hasn't yet, so I'll leave it for now
             table.remove(self.bullets, i)
-            print('begone')
         end
     end
 end
