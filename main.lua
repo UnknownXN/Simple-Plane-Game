@@ -1,7 +1,9 @@
+math.randomseed(os.time())
+
 require 'src/dependencies'
 require 'src/constants'
 function love.load()
-    math.randomseed(os.time())
+    
 
     player_craft = math.random(1, 5)
 

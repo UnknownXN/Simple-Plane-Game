@@ -12,12 +12,17 @@ function Player:init()
 
     self.ammo = 5
 
+    self.points = 0
+    self.money = 0
+    self.distanceTravelled = 0
+    self.lives = 3
     -- reference to other things in the world
-
-    
+    self.invulnerable = false
+    self.invulnerableBlink = true
 end
 
 function Player:update(dt)
+    Timer.every(0.05, function () self.invulnerableBlink = not self.invulnerableBlink end)
 
     -- -- player updates
     -- -- movement
@@ -63,5 +68,13 @@ function Player:update(dt)
 end
 
 function Player:render()
+    -- draws player texture
+    if self.invulnerable then
+        if self.invulnerableBlink then
+            love.graphics.setColor(1, 1, 1, 0.5)
+        end
+    end
     love.graphics.draw(gTextures['space-craft'], gImages['player'], self.x, self.y)
+
+    love.graphics.setColor(1, 1, 1, 1)
 end

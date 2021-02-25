@@ -26,7 +26,8 @@ gTextures = {
 }
 
 gImages = {
-    ['player'] =love.graphics.newQuad(702, 118, 85, 61, gTextures['space-craft']:getDimensions())
+    ['player'] = love.graphics.newQuad(702, 118, 85, 61, gTextures['space-craft']:getDimensions()),
+    ['lives'] = love.graphics.newQuad(4 + 4 * 33, 4 + math.random(0, 4) * 33, 32, 32, gTextures['space-craft']:getDimensions())
     --['player'] = love.graphics.newQuad(0, 0, 32, 32, gTextures['space-craft']:getDimensions())
 }
 gFonts = {

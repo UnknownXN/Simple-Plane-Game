@@ -10,7 +10,7 @@ function BasePlayerState:render()
     
 end
 function BaseUpdateMovement(dt, player)
-                -- player updates
+    -- player updates
     -- movement
     if love.keyboard.isDown('up') then
         player.dy = -PLAYER_SPEED
@@ -43,4 +43,6 @@ function BaseUpdateMovement(dt, player)
     elseif player.y + 61 > VIRTUAL_HEIGHT then
         player.y = VIRTUAL_HEIGHT - 61
     end
+
+    player.distanceTravelled = player.distanceTravelled + 0.1 * PLAYER_SPEED * dt
 end

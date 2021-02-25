@@ -1,9 +1,9 @@
 Bullet = Class{}
 
 function Bullet:init(Player)
-    self.width = 2
+    self.width = 3
     self.height = 10
-    self.x = Player.x + Player.width * 0.5 + 1
+    self.x = Player.x + Player.width * 0.5 - 1
     self.y = Player.y - self.height
 end
 function Bullet:update(dt)
