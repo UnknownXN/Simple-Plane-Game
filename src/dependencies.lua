@@ -9,11 +9,13 @@ require 'src/Util'
 require 'src/States/BaseState'
 require 'src/States/PlayState'
 require 'src/States/StartState'
+require 'src/States/EndState'
 
 require 'src/Player'
 require 'src/Bullet'
 require 'src/World'
 require 'src/Asteroid'
+require 'src/GameObject'
 
 require 'src/States/PlayerStates/PlayerFlyState'
 require 'src/States/PlayerStates/PlayerReloadState'
@@ -32,5 +34,6 @@ gImages = {
 }
 gFonts = {
     ['large_font'] = love.graphics.newFont('fonts/font.ttf', 128),
+    ['medium_font'] = love.graphics.newFont('fonts/font.ttf', 64),
     ['small_font'] = love.graphics.newFont('fonts/font.ttf', 32)
 }

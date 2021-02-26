@@ -12,6 +12,7 @@ function PlayState:init()
     }
     -- sets to a state
     PlayerStates:change('fly')
+    
 end
 
 function PlayState:update(dt)

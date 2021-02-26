@@ -8,9 +8,17 @@ function World:init(player)
 
     -- same thing but for the asteroids
     self.asteroids = {}
+
+    self.objects = {}
 end
 
 function World:update(dt)
+    -- chance to spawn power up
+    if math.random(1, 60) == 1 then
+        table.insert(self.objects,
+        GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, width = 16, height = 16, type = 'points',
+            onConsume = function () self.player.points = self.player.points + 500 end})
+    end
     -- change to spawn asteroids
     if math.random(1, 50) == 1 then
         table.insert(self.asteroids, 
@@ -23,12 +31,18 @@ function World:update(dt)
         if asteroid:collides(self.player) and not self.player.invulnerable then
             self.player.lives = self.player.lives - 1
             self.player.invulnerable = true
+            table.remove(self.asteroids, a)
             Timer.after(2, function() self.player.invulnerable = false end)
             if self.player.lives == 0 then
-                gStateMachine:change('start')
+                gStateMachine:change('end', {distance = self.player.distanceTravelled,
+                    points = self.player.points, money = self.player.money})
             end
         end
+    end
 
+    -- updates game objects so it looks like they're moving
+    for o, object in pairs(self.objects) do
+        object:update(dt)
     end
 
     -- checks if each asteroid has collided with a bullet or not
@@ -46,6 +60,13 @@ function World:update(dt)
     -- updates the bullets
     for i, bullet in pairs(self.bullets) do
         bullet:update(dt)
+    end
+
+    for p, object in pairs(self.objects) do
+        if object:collides(self.player) then
+            object.onConsume()
+            table.remove(self.objects, p)
+        end
     end
 
     -- garbage collection for bullets, asteroids, etc
@@ -88,5 +109,9 @@ function World:render()
     -- renders asteroids
     for a, asteroids in pairs(self.asteroids) do
         asteroids:render()
+    end
+
+    for o, object in pairs(self.objects) do
+        object:render()
     end
 end
