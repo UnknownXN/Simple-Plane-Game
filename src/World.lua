@@ -16,11 +16,16 @@ function World:update(dt)
     -- chance to spawn power up
     if math.random(1, 60) == 1 then
         table.insert(self.objects,
-        GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, width = 16, height = 16, type = 'points',
+        Collectible{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, width = 16, height = 16, type = 'points',
             onConsume = function () self.player.points = self.player.points + 500 end})
     end
+    if math.random(1, 150) == 1 then
+        table.insert(self.objects,
+            Coins({x = math.random(0, VIRTUAL_WIDTH - 64), y = -64, width = 64, height = 64, type = 'coins',
+                onConsume = function () self.player.money = self.player.money + 1 end}))
+    end
     -- change to spawn asteroids
-    if math.random(1, 50) == 1 then
+    if math.random(1, 75) == 1 then
         table.insert(self.asteroids, 
             Asteroid({x = math.random(50, VIRTUAL_WIDTH - 50), y = 0, width = math.random(40, 80), height = math.random(40, 80), pointValue = 100}))
     end
@@ -50,10 +55,14 @@ function World:update(dt)
         for b, bullet in pairs(self.bullets) do
             -- if so, then remove both objects, add a sound later, and give the player some points
             if bullet:collides(asteroid) then
-                table.remove(self.asteroids, a)
+                
                 table.remove(self.bullets, b)
-
-                self.player.points = self.player.points + asteroid.pointValue
+                asteroid.hp = asteroid.hp - self.player.bulletDamage
+                if asteroid.hp <= 0 then
+                    table.remove(self.asteroids, a)
+                    self.player.points = self.player.points + asteroid.pointValue
+                end
+                
             end
         end
     end
@@ -88,19 +97,7 @@ function World:update(dt)
 end
 
 function World:render()
-    for i = 0, self.player.lives - 1 do 
-        love.graphics.draw(gTextures['space-craft'], gImages['lives'], i * 64, 0, 0, 1.5, 1.5)
-    end
-
-    -- draws hwo much ammo we have
-    love.graphics.setFont(gFonts['small_font'])
-    love.graphics.print('Ammo   : ' .. self.player.ammo, 0, 60)
-    -- prints amount of points we have
-    love.graphics.print('Points  : ' .. self.player.points, 0, 100)
-    -- prints how much money we have
-    love.graphics.print('Money  : ' .. self.player.money, 0, 140)
-    -- prints distanceTravelled
-    love.graphics.printf('Distance: ' .. math.floor(self.player.distanceTravelled), 0, 0, VIRTUAL_WIDTH, 'right')
+    World:PlayerStatsRender(self.player)
     -- renders the bullets
     for i, bullet in pairs(self.bullets) do
         bullet:render()
@@ -114,4 +111,21 @@ function World:render()
     for o, object in pairs(self.objects) do
         object:render()
     end
+end
+
+function World:PlayerStatsRender(player)
+    love.graphics.setColor(1, 1, 1 ,1)
+    for i = 0, player.lives - 1 do 
+        love.graphics.draw(gTextures['space-craft'], gImages['lives'], i * 64, 0, 0, 1.5, 1.5)
+    end
+
+    -- draws hwo much ammo we have
+    love.graphics.setFont(gFonts['small_font'])
+    love.graphics.print('Ammo   : ' .. player.ammo, 0, 60)
+    -- prints amount of points we have
+    love.graphics.print('Points  : ' .. player.points, 0, 100)
+    -- prints how much money we have
+    love.graphics.print('Money  : ' .. player.money, 0, 140)
+    -- prints distanceTravelled
+    love.graphics.printf('Distance: ' .. math.floor(player.distanceTravelled), 0, 0, VIRTUAL_WIDTH, 'right')
 end

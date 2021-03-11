@@ -13,7 +13,7 @@ function PlayerReloadState:update(dt)
     if self.stateTimer > 2 then
         self.stateTimer = 0
         PlayerStates:change('fly') 
-        self.player.ammo = 5
+        self.player.ammo = self.player.maxAmmo
         print('change to fly')
     end
     -- issue seems like timer isn't resetting, bc after the first delay, there's no more delay

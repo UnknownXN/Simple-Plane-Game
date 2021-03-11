@@ -16,9 +16,7 @@ function StateMachine:change(stateName, enterParams)
 	assert(self.states[stateName]) -- state must exist!
 	--self.current:exit()
 	self.current = self.states[stateName]()
-	if enterParams ~= nil then
-		self.current:enter(enterParams)
-	end
+	if enterParams ~= nil then self.current:enter(enterParams) end
 end
 
 function StateMachine:update(dt)

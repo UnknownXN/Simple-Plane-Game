@@ -11,6 +11,15 @@ function Player:init()
     self.height = 61
 
     self.ammo = 5
+    self.maxAmmo = 5
+    self.AmmoLevel = 1
+
+
+    self.bulletDamage = 1
+    self.bulletDamageLevel = 1
+
+    self.speedMulti = 1
+    self.speedLevel = 1
 
     self.points = 0
     self.money = 0

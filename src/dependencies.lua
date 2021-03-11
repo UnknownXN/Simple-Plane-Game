@@ -8,6 +8,7 @@ require 'src/Util'
 
 require 'src/States/BaseState'
 require 'src/States/PlayState'
+require 'src/States/ShopState'
 require 'src/States/StartState'
 require 'src/States/EndState'
 
@@ -16,6 +17,8 @@ require 'src/Bullet'
 require 'src/World'
 require 'src/Asteroid'
 require 'src/GameObject'
+require 'src/Collectible'
+require 'src/Coins'
 
 require 'src/States/PlayerStates/PlayerFlyState'
 require 'src/States/PlayerStates/PlayerReloadState'

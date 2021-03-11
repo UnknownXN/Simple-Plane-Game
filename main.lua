@@ -22,6 +22,7 @@ function love.load()
     gStateMachine = StateMachine{
         ['start'] = function () return StartState() end,
         ['play'] = function () return PlayState() end,
+        ['shop'] = function () return ShopState() end,
         ['end'] = function () return EndState() end
     }
     gStateMachine:change('start')
@@ -39,6 +40,8 @@ function love.update(dt)
     --     print('adfbaiubuiab')
     -- end
 
+    Timer.update(dt)
+    
     gStateMachine:update(dt)
     -- background parallax scrolling
     offsetY = offsetY + SCROLL_SPEED * dt
