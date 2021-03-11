@@ -44,5 +44,5 @@ function BaseUpdateMovement(dt, player)
         player.y = VIRTUAL_HEIGHT - 61
     end
 
-    player.distanceTravelled = player.distanceTravelled + 0.1 * PLAYER_SPEED * player.speedMulti * dt
+    player.distanceTravelled = player.distanceTravelled +  PLAYER_SPEED * player.speedMulti * dt
 end

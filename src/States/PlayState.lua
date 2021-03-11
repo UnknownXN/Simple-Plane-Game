@@ -12,27 +12,31 @@ function PlayState:init()
     }
     -- sets to a state
     PlayerStates:change('fly')
-    
+    print('init')
 end
 function PlayState:enter(enterParams)
-        -- initializes instance of palyer and the world
-        self.player =  enterParams.player
-        self.world = World(self.player)
-        
-        -- statemachine for the player
-        PlayerStates = StateMachine{
-            ['fly'] = function () return PlayerFlyState(self.player, self.world) end,
-            ['reload'] = function () return PlayerReloadState(self.player, self.world) end
-        }
-        -- sets to a state
-        PlayerStates:change('fly')
+    -- initializes instance of palyer and the world
+    self.player =  enterParams.player
+    self.world = enterParams.world
+
+    -- statemachine for the player
+    PlayerStates = StateMachine{
+        ['fly'] = function () return PlayerFlyState(self.player, self.world) end,
+        ['reload'] = function () return PlayerReloadState(self.player, self.world) end
+    }
+    -- sets to a state
+    PlayerStates:change('fly')
+    print('enter')
 end
 function PlayState:update(dt)
     self.player:update(dt)
 
     PlayerStates:update(dt)
     self.world:update(dt)
-    if love.keyboard.wasPressed('l') then
+
+    
+    if self.player.distanceTravelled > self.world.shopDistance then
+        self.world.shopDistance = self.world.shopDistance + 10000 + 5000 * (self.player.speedLevel + self.player.bulletDamageLevel + self.player.AmmoLevel - 3)
         gStateMachine:change('shop', {player = self.player, world = self.world})
     end
 

@@ -10,7 +10,10 @@ function World:init(player)
     self.asteroids = {}
 
     self.objects = {}
+
+    self.shopDistance = 10000
 end
+
 
 function World:update(dt)
     -- chance to spawn power up
@@ -93,6 +96,7 @@ function World:update(dt)
         end
     end
 
+    
     Timer.update(dt)
 end
 
