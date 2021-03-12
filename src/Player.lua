@@ -28,6 +28,8 @@ function Player:init()
     -- reference to other things in the world
     self.invulnerable = false
     self.invulnerableBlink = true
+
+    self.currentState = nil
 end
 
 function Player:update(dt)

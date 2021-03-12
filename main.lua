@@ -69,3 +69,14 @@ function love.draw()
     gStateMachine:render()
     push:finish()
 end
+function tableIsEmpty(table)
+    local counter = 0
+    for i, v in pairs (table) do
+        counter = counter + 1
+    end
+    if counter == 0 then
+        return true
+    else
+        return false
+    end
+end

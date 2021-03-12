@@ -8,7 +8,8 @@ function PlayState:init()
     -- statemachine for the player
     PlayerStates = StateMachine{
         ['fly'] = function () return PlayerFlyState(self.player, self.world) end,
-        ['reload'] = function () return PlayerReloadState(self.player, self.world) end
+        ['reload'] = function () return PlayerReloadState(self.player, self.world) end,
+        ['shop'] = function () return PlayerShopState(self.player, self.world) end
     }
     -- sets to a state
     PlayerStates:change('fly')
@@ -22,7 +23,8 @@ function PlayState:enter(enterParams)
     -- statemachine for the player
     PlayerStates = StateMachine{
         ['fly'] = function () return PlayerFlyState(self.player, self.world) end,
-        ['reload'] = function () return PlayerReloadState(self.player, self.world) end
+        ['reload'] = function () return PlayerReloadState(self.player, self.world) end,
+        ['shop'] = function () return PlayerShopState(self.player, self.world) end
     }
     -- sets to a state
     PlayerStates:change('fly')
@@ -35,9 +37,10 @@ function PlayState:update(dt)
     self.world:update(dt)
 
     
-    if self.player.distanceTravelled > self.world.shopDistance then
+    if self.player.distanceTravelled > self.world.shopDistance and tableIsEmpty(self.world.objects) then
         self.world.shopDistance = self.world.shopDistance + 10000 + 5000 * (self.player.speedLevel + self.player.bulletDamageLevel + self.player.AmmoLevel - 3)
         gStateMachine:change('shop', {player = self.player, world = self.world})
+
     end
 
 end
@@ -49,4 +52,5 @@ function PlayState:render()
 
     -- renders everything in world (asteroids, bullets, etc)
     self.world:render()
+    
 end

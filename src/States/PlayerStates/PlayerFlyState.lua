@@ -3,6 +3,7 @@ PlayerFlyState = Class{__includes = BasePlayerState}
 function PlayerFlyState:init(player, world)
     self.player = player
     self.world = world
+    self.player.currentState = 'fly'
 end
 function PlayerFlyState:update(dt)
     BaseUpdateMovement(dt, self.player)
@@ -20,6 +21,8 @@ function PlayerFlyState:update(dt)
         PlayerStates:change('reload')
         print('reload')
     end
+
+    self.player.distanceTravelled = self.player.distanceTravelled +  PLAYER_SPEED * self.player.speedMulti * dt
     --Timer.update(dt)
 end
 function PlayerFlyState:render()

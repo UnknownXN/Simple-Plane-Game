@@ -5,7 +5,7 @@ function PlayerReloadState:init(player, world)
     
     self.stateTimer = 0
 
-    
+    self.player.currentState = 'reload'
 end
 function PlayerReloadState:update(dt)
     self.stateTimer = self.stateTimer + dt
@@ -25,6 +25,7 @@ function PlayerReloadState:update(dt)
     --     --Timer.clear()
     -- end)
     -- Timer.update(dt)
+    self.player.distanceTravelled = self.player.distanceTravelled +  PLAYER_SPEED * self.player.speedMulti * dt
 end
 function PlayerReloadState:render()
     self.player:render()

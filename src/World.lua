@@ -11,28 +11,29 @@ function World:init(player)
 
     self.objects = {}
 
-    self.shopDistance = 10000
+    self.shopDistance = 3000
 end
 
 
 function World:update(dt)
-    -- chance to spawn power up
-    if math.random(1, 60) == 1 then
-        table.insert(self.objects,
-        Collectible{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, width = 16, height = 16, type = 'points',
-            onConsume = function () self.player.points = self.player.points + 500 end})
+    if not (self.player.distanceTravelled > self.shopDistance) then
+        -- chance to spawn power up
+        if math.random(1, 60) == 1 then
+            table.insert(self.objects,
+            Collectible{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, width = 16, height = 16, type = 'points',
+                onConsume = function () self.player.points = self.player.points + 500 end})
+        end
+        if math.random(1, 150) == 1 then
+            table.insert(self.objects,
+                Coins({x = math.random(0, VIRTUAL_WIDTH - 64), y = -64, width = 64, height = 64, type = 'coins',
+                    onConsume = function () self.player.money = self.player.money + 1 end}))
+        end
+        -- change to spawn asteroids
+        if math.random(1, 75) == 1 then
+            table.insert(self.asteroids, 
+                Asteroid({x = math.random(50, VIRTUAL_WIDTH - 50), y = 0, width = math.random(40, 80), height = math.random(40, 80), pointValue = 100}))
+        end
     end
-    if math.random(1, 150) == 1 then
-        table.insert(self.objects,
-            Coins({x = math.random(0, VIRTUAL_WIDTH - 64), y = -64, width = 64, height = 64, type = 'coins',
-                onConsume = function () self.player.money = self.player.money + 1 end}))
-    end
-    -- change to spawn asteroids
-    if math.random(1, 75) == 1 then
-        table.insert(self.asteroids, 
-            Asteroid({x = math.random(50, VIRTUAL_WIDTH - 50), y = 0, width = math.random(40, 80), height = math.random(40, 80), pointValue = 100}))
-    end
-
     -- updates asteroids
     for a, asteroid in pairs(self.asteroids) do
         asteroid:update(dt)
@@ -90,12 +91,17 @@ function World:update(dt)
         end
     end
     for a, asteroid in pairs(self.asteroids) do
-        if asteroid.y < -asteroid.height then
+        if asteroid.y > VIRTUAL_HEIGHT then
             -- same comment as above
             table.remove(self.asteroids, a)
         end
     end
-
+    for o, object in pairs(self.objects) do
+        if object.y > VIRTUAL_HEIGHT then
+            table.remove(self.objects, o)
+        end
+    end
+    print(self.asteroids[1])
     
     Timer.update(dt)
 end
@@ -130,6 +136,8 @@ function World:PlayerStatsRender(player)
     love.graphics.print('Points  : ' .. player.points, 0, 100)
     -- prints how much money we have
     love.graphics.print('Money  : ' .. player.money, 0, 140)
-    -- prints distanceTravelled
-    love.graphics.printf('Distance: ' .. math.floor(player.distanceTravelled), 0, 0, VIRTUAL_WIDTH, 'right')
+    -- prints distanceTravelled\
+    if not (player.currentState == 'shop') then
+        love.graphics.printf('Distance: ' .. math.floor(player.distanceTravelled), 0, 0, VIRTUAL_WIDTH, 'right')
+    end
 end
