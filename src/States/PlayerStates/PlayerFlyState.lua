@@ -8,13 +8,15 @@ end
 function PlayerFlyState:update(dt)
     BaseUpdateMovement(dt, self.player)
 
-    if love.keyboard.wasPressed('space') then
+    if love.keyboard.isDown('space') and not self.player.readyingNextShot then
         -- inserts into the bullets table in the world and instance of a bullet
         table.insert(self.world.bullets, Bullet(self.player))
 
         -- substracts ammo by 1
         self.player.ammo = self.player.ammo - 1
         print(self.player.ammo)
+        self.player.readyingNextShot = true
+        Timer.after(0.5, function () self.player.readyingNextShot = false end)
     end
 
     if self.player.ammo == 0 then

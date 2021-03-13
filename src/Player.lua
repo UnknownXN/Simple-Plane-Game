@@ -30,11 +30,16 @@ function Player:init()
     self.invulnerableBlink = true
 
     self.currentState = nil
+
+    self.shieldIsActive = false
+
+    self.readyingNextShot = false
 end
 
 function Player:update(dt)
+        
     Timer.every(0.05, function () self.invulnerableBlink = not self.invulnerableBlink end)
-
+    
     -- -- player updates
     -- -- movement
     -- if love.keyboard.isDown('up') then
@@ -84,6 +89,10 @@ function Player:render()
         if self.invulnerableBlink then
             love.graphics.setColor(1, 1, 1, 0.5)
         end
+    end
+    if self.shieldIsActive then
+        love.graphics.setColor(1, 1, 0, 1)
+        love.graphics.circle('line', self.x + math.floor(0.5 * self.width), self.y + math.floor(0.5 * self.height), 64, 100)
     end
     love.graphics.draw(gTextures['space-craft'], gImages['player'], self.x, self.y)
 

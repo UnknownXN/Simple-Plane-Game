@@ -20,8 +20,14 @@ function World:update(dt)
         -- chance to spawn power up
         if math.random(1, 60) == 1 then
             table.insert(self.objects,
-            Collectible{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, width = 16, height = 16, type = 'points',
+            Collectible{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, width = 16, height = 16, r = 1, g = 0, b = 0, type = 'points',
                 onConsume = function () self.player.points = self.player.points + 500 end})
+        end
+        if math.random(1, 60) == 1 then
+            table.insert(self.objects,
+            Collectible{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, width = 16, height = 16, r = 0, g = 0, b = 1, type = 'shield',
+                onConsume = function () self.player.shieldIsActive = true end})
+
         end
         if math.random(1, 150) == 1 then
             table.insert(self.objects,
@@ -38,13 +44,28 @@ function World:update(dt)
     for a, asteroid in pairs(self.asteroids) do
         asteroid:update(dt)
         if asteroid:collides(self.player) and not self.player.invulnerable then
-            self.player.lives = self.player.lives - 1
-            self.player.invulnerable = true
-            table.remove(self.asteroids, a)
-            Timer.after(2, function() self.player.invulnerable = false end)
-            if self.player.lives == 0 then
-                gStateMachine:change('end', {distance = self.player.distanceTravelled,
-                    points = self.player.points, money = self.player.money})
+            -- if player shield isn't active then:
+            if not self.player.shieldIsActive then
+                -- takes  a life away
+                self.player.lives = self.player.lives - 1
+                -- makes player invulnerable
+                self.player.invulnerable = true
+                -- removes asteroid
+                table.remove(self.asteroids, a)
+                -- makes player vulnerable again after 2 seconds
+                Timer.after(2, function() self.player.invulnerable = false end)
+
+                -- game over if you run out of lives
+                if self.player.lives <= 0 then
+                    gStateMachine:change('end', {distance = self.player.distanceTravelled,
+                        points = self.player.points, money = self.player.money})
+                end
+            else
+                -- if it is, destroy shield
+                self.player.shieldIsActive = false
+                
+                -- removes asteroid
+                table.remove(self.asteroids, a)
             end
         end
     end
@@ -101,7 +122,6 @@ function World:update(dt)
             table.remove(self.objects, o)
         end
     end
-    print(self.asteroids[1])
     
     Timer.update(dt)
 end

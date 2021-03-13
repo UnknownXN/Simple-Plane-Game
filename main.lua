@@ -35,10 +35,6 @@ function love.update(dt)
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
     end
-    -- if love.keyboard.wasPressed('p') then
-    --     PlayerStates:change('reload')
-    --     print('adfbaiubuiab')
-    -- end
 
     Timer.update(dt)
     
