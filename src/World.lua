@@ -11,7 +11,7 @@ function World:init(player)
 
     self.objects = {}
 
-    self.shopDistance = 3000
+    self.shopDistance = 10000
 end
 
 
