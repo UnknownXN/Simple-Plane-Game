@@ -90,10 +90,6 @@ function Player:render()
             love.graphics.setColor(1, 1, 1, 0.5)
         end
     end
-    if self.shieldIsActive then
-        love.graphics.setColor(1, 1, 0, 1)
-        love.graphics.circle('line', self.x + math.floor(0.5 * self.width), self.y + math.floor(0.5 * self.height), 64, 100)
-    end
     love.graphics.draw(gTextures['space-craft'], gImages['player'], self.x, self.y)
 
     love.graphics.setColor(1, 1, 1, 1)

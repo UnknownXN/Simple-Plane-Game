@@ -18,8 +18,8 @@ require 'src/Bullet'
 require 'src/World'
 require 'src/Asteroid'
 require 'src/GameObject'
-require 'src/Collectible'
-require 'src/Coins'
+
+require 'src/PowerUps/Shield'
 
 require 'src/States/PlayerStates/PlayerFlyState'
 require 'src/States/PlayerStates/PlayerReloadState'

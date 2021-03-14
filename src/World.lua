@@ -12,6 +12,8 @@ function World:init(player)
     self.objects = {}
 
     self.shopDistance = 10000
+    
+    self.powerUps = {}
 end
 
 
@@ -20,18 +22,37 @@ function World:update(dt)
         -- chance to spawn power up
         if math.random(1, 60) == 1 then
             table.insert(self.objects,
-            Collectible{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, width = 16, height = 16, r = 1, g = 0, b = 0, type = 'points',
+            GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 1, g = 0, b = 0, type = 'points',
                 onConsume = function () self.player.points = self.player.points + 500 end})
         end
-        if math.random(1, 60) == 1 then
+        if math.random(1, 180) == 1 then
             table.insert(self.objects,
-            Collectible{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, width = 16, height = 16, r = 0, g = 0, b = 1, type = 'shield',
-                onConsume = function () self.player.shieldIsActive = true end})
+            GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 0, g = 0, b = 1, type = 'shield',
+                onConsume = function () 
+                    self.player.shieldIsActive = true
+
+                    local noShield = true
+                    if tableIsEmpty(self.powerUps) then 
+                        noShield = true
+                    else 
+                        
+                        for p, powerUp in pairs(self.powerUps) do
+                            if powerUp.type == 'shield' then
+                                noShield = false
+                            end
+                        end
+
+                    end
+                    if noShield then
+                        table.insert(self.powerUps, Shield{x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
+                        radius = 64, type = 'shield', shape = 'circle', drawType = 'line'}) 
+                    end
+                end})
 
         end
         if math.random(1, 150) == 1 then
             table.insert(self.objects,
-                Coins({x = math.random(0, VIRTUAL_WIDTH - 64), y = -64, width = 64, height = 64, type = 'coins',
+                GameObject({x = math.random(0, VIRTUAL_WIDTH - 64), y = -64, dx = 0, dy = POWERUP_OBJECT_SPEED, shape = 'circle', r = 1, g = 1, b = 0, radius = 32, type = 'coins',
                     onConsume = function () self.player.money = self.player.money + 1 end}))
         end
         -- change to spawn asteroids
@@ -44,33 +65,35 @@ function World:update(dt)
     for a, asteroid in pairs(self.asteroids) do
         asteroid:update(dt)
         if asteroid:collides(self.player) and not self.player.invulnerable then
-            -- if player shield isn't active then:
-            if not self.player.shieldIsActive then
-                -- takes  a life away
-                self.player.lives = self.player.lives - 1
-                -- makes player invulnerable
-                self.player.invulnerable = true
-                -- removes asteroid
-                table.remove(self.asteroids, a)
-                -- makes player vulnerable again after 2 seconds
-                Timer.after(2, function() self.player.invulnerable = false end)
+            -- takes  a life away
+            self.player.lives = self.player.lives - 1
+            -- makes player invulnerable
+            self.player.invulnerable = true
+            -- removes asteroid
+            table.remove(self.asteroids, a)
+            -- makes player vulnerable again after 2 seconds
+            Timer.after(2, function() self.player.invulnerable = false end)
+            -- game over if you run out of lives
+            if self.player.lives <= 0 then
+                gStateMachine:change('end', {distance = self.player.distanceTravelled,
+                    points = self.player.points, money = self.player.money})
+            end
+            -- removes asteroid
+            table.remove(self.asteroids, a)
+        
+        end
+    end
 
-                -- game over if you run out of lives
-                if self.player.lives <= 0 then
-                    gStateMachine:change('end', {distance = self.player.distanceTravelled,
-                        points = self.player.points, money = self.player.money})
-                end
-            else
-                -- if it is, destroy shield
-                self.player.shieldIsActive = false
-                
-                -- removes asteroid
+    for p, powerUp in pairs(self.powerUps) do
+        powerUp:update(dt, self.player)
+        for a, asteroid in pairs(self.asteroids) do
+            if powerUp:collides(asteroid) then
+                table.remove(self.powerUps, p)
                 table.remove(self.asteroids, a)
             end
         end
     end
-
-    -- updates game objects so it looks like they're moving
+    -- updates game objects so they move
     for o, object in pairs(self.objects) do
         object:update(dt)
     end
@@ -132,7 +155,6 @@ function World:render()
     for i, bullet in pairs(self.bullets) do
         bullet:render()
     end
-
     -- renders asteroids
     for a, asteroids in pairs(self.asteroids) do
         asteroids:render()
@@ -140,6 +162,12 @@ function World:render()
 
     for o, object in pairs(self.objects) do
         object:render()
+    end
+
+    for p, powerUp in pairs(self.powerUps) do
+        -- collision debugging
+        love.graphics.rectangle('line', powerUp.x - powerUp.radius, powerUp.y - powerUp.radius, powerUp.radius*2, powerUp.radius * 2)
+        powerUp:render(self.player)
     end
 end
 
