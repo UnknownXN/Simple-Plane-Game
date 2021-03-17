@@ -42,7 +42,11 @@ function BaseUpdateMovement(dt, player)
         player.y = 0
     elseif player.y + 61 > VIRTUAL_HEIGHT then
         player.y = VIRTUAL_HEIGHT - 61
+    end    
+end
+function BasePlayerBonuses(dt, player)
+    if player.points >= livePoints then
+        player.lives = math.min(3, player.lives + 1)
+        livePoints = livePoints + 10000
     end
-
-    
 end

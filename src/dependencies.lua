@@ -19,6 +19,9 @@ require 'src/World'
 require 'src/Asteroid'
 require 'src/GameObject'
 
+require 'src/GUI/Panel'
+require 'src/GUI/PicturePanel'
+
 require 'src/PowerUps/Shield'
 
 require 'src/States/PlayerStates/PlayerFlyState'

@@ -39,6 +39,7 @@ end
 function Player:update(dt)
         
     Timer.every(0.05, function () self.invulnerableBlink = not self.invulnerableBlink end)
+    BasePlayerBonuses(dt, self)
     
     -- -- player updates
     -- -- movement

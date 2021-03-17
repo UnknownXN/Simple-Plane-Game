@@ -13,7 +13,9 @@ function PlayState:init()
     }
     -- sets to a state
     PlayerStates:change('fly')
-    print('init')
+    -- 4 is the boarder, and x and y ar offset by the boarder so you can still see the boarder
+    self.powerUpSlot = PicturePanel({x = VIRTUAL_WIDTH - 96 - 4, y = VIRTUAL_HEIGHT - 96 - 4, 
+        width = 96, height = 96, boarder = 4, texture = gTextures['space-craft'], image = gImages['lives']})
 end
 function PlayState:enter(enterParams)
     -- initializes instance of palyer and the world
@@ -36,21 +38,21 @@ function PlayState:update(dt)
     PlayerStates:update(dt)
     self.world:update(dt)
 
-    
     if self.player.distanceTravelled > self.world.shopDistance and tableIsEmpty(self.world.objects) then
         self.world.shopDistance = self.world.shopDistance + 10000 + 5000 * (self.player.speedLevel + self.player.bulletDamageLevel + self.player.AmmoLevel - 3)
         gStateMachine:change('shop', {player = self.player, world = self.world})
 
     end
-
 end
 
 function PlayState:render()
+
     -- self.player:render()
     PlayerStates:render()
-
+    
 
     -- renders everything in world (asteroids, bullets, etc)
     self.world:render()
-    
+
+    self.powerUpSlot:render()
 end
