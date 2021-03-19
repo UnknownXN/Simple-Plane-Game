@@ -13,13 +13,16 @@ function Player:init()
     self.ammo = 5
     self.maxAmmo = 5
     self.AmmoLevel = 1
-
+    self.ammoPrice = 8
 
     self.bulletDamage = 1
     self.bulletDamageLevel = 1
+    self.bulletDamagePrice = 10
+    
 
     self.speedMulti = 1
     self.speedLevel = 1
+    self.speedPrice = 9
 
     self.points = 0
     self.money = 0
