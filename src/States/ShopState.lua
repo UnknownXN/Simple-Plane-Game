@@ -31,8 +31,8 @@ function ShopState:init(def)
         [2] = function (__, player)
             if player.money >= player.speedPrice and player.speedLevel < 3 then
                 player.money = player.money - 9
-                player.speedMulti = 1.1
                 player.speedLevel = player.speedLevel + 1
+                player.speedMulti = 1 + 0.1 * (player.speedLevel - 1)
                 player.speedLevel = math.max(3, player.speedLevel)
                 player.speedPrice = player.speedPrice + 3
                 gStateMachine:change('play', {player = self.player, world = self.world})

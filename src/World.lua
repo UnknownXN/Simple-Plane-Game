@@ -15,8 +15,15 @@ function World:init(player)
         -- 4 is the boarder, and x and y ar offset by the boarder so you can still see the boarder
     self.powerUpSlot = PicturePanel({x = VIRTUAL_WIDTH - 96 - 4, y = VIRTUAL_HEIGHT - 96 - 4, 
         width = 96, height = 96, boarder = 4})
-    self.savedPowerUp = nil
     self.powerUps = {}
+
+    -- saved powerup saves a function or nil.
+    -- gist of it:
+    -- if the player has a power up already, then whatever gets picked up will get saved here in a function.
+    -- the power up is used by calling this function if a button is pressed.
+    -- then it'll be set back to nil, ready to store a new power up 
+    -- if there's already a function, it'll get replaced
+    self.savedPowerUp = nil
 end
 
 
@@ -35,19 +42,75 @@ function World:update(dt)
             
 
                     -- if there isn't a power up, then appy it immediately
-                    if tableIsEmpty(self.powerUps) then
+                    if not self.player.hasPowerUps then
+                        self.player.hasPowerUps = true
                         table.insert(self.powerUps, Shield{x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
-                        radius = 64, type = 'shield', shape = 'circle', drawType = 'line', texture = gTextures['space-craft'], image = gImages['lives']}) 
+                            radius = 64, type = 'shield', shape = 'circle', drawType = 'line'}) 
                     -- else, save the power up to be added later.
                     else
-                        if self.savedPowerUp == nil then
-                            self.savedPowerUp = Shield{x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
-                                radius = 64, type = 'shield', shape = 'circle', drawType = 'line', texture = gTextures['space-craft'], image = gImages['lives']}
+                        self.savedPowerUp = function ()
+                            table.insert(self.powerUps, Shield{x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
+                            radius = 64, type = 'shield', shape = 'circle', drawType = 'line'}) 
                         end
+                        self.powerUpSlot.texture = gTextures['power-ups']
+                        self.powerUpSlot.image = gImages['power-ups'][1]
                     end    
                         
                 end})
+        end
+        if math.random(1, 180) == 1 then
+            table.insert(self.objects,
+            GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 0, g = 0.5, b = 0.5, type = 'infinite-bullets',
+            onConsume = function ()
+                if not self.player.hasPowerUps then
+                    self.player.hasPowerUps = true
+                    self.player.ammo = 9999
+                    Timer.after(10, function ()
+                        self.player.ammo = self.player.maxAmmo
+                        self.player.hasPowerUps = false
+                    end)
+                else 
+                    self.savedPowerUp = function ()
+                        self.player.hasPowerUps = true
+                        self.player.ammo = 9999
+                        Timer.after(10, function ()
+                            self.player.ammo = self.player.maxAmmo
+                            self.player.hasPowerUps = false
+                        end)
+                    end
+                    self.powerUpSlot.texture = gTextures['power-ups']
+                    self.powerUpSlot.image = gImages['power-ups'][3]
+                end
+            end})
+        end
+        if math.random(1, 180) == 1 then
+            table.insert(self.objects,
+                GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 0, g = 1, b = 0, type = 'speed',
+                    onConsume = function () 
+                        if not self.player.hasPowerUps then 
+                            self.player.speedMulti = 1.5
+                            self.player.hasPowerUps = true
+                            Timer.after( 10, function () 
+                                self.player.speedMulti = (1 + 0.1 * (self.player.speedLevel - 1))
+                                self.player.hasPowerUps = false 
+                            end)
+                        else
+                            self.savedPowerUp = function ()
+                                self.player.speedMulti = 2
+                                self.player.hasPowerUps = true
+                                Timer.after( 10, function () 
+                                    self.player.speedMulti = (1 + 0.1 * (self.player.speedLevel - 1))
+                                    self.player.hasPowerUps = false 
+                                end)
 
+                            end
+                            self.powerUpSlot.texture = gTextures['power-ups']
+                            self.powerUpSlot.image = gImages['power-ups'][2]
+
+                        end
+                    
+                        
+                    end})
         end
         if math.random(1, 150) == 1 then
             table.insert(self.objects,
@@ -61,17 +124,14 @@ function World:update(dt)
         end
     end
 
+    -- press l to used what ever power up is currently saved
     if love.keyboard.wasPressed('l') then
-        table.insert(self.powerUps, self.savedPowerUp)
+        self.savedPowerUp()
         self.savedPowerUp = nil
         self.powerUpSlot.texture  = nil
         self.powerUpSlot.image = nil
     end
-    if self.savedPowerUp ~= nil then 
-        self.powerUpSlot.texture  =self.savedPowerUp.texture
-        self.powerUpSlot.image = self.savedPowerUp.image
-    end
-    -- updates asteroids
+
     for a, asteroid in pairs(self.asteroids) do
         asteroid:update(dt)
         if asteroid:collides(self.player) and not self.player.invulnerable then
@@ -93,13 +153,14 @@ function World:update(dt)
         
         end
     end
-
+    -- updates power ups and the various effects
     for p, powerUp in pairs(self.powerUps) do
         powerUp:update(dt, self.player)
         for a, asteroid in pairs(self.asteroids) do
             if powerUp:collides(asteroid) then
                 table.remove(self.powerUps, p)
                 table.remove(self.asteroids, a)
+                self.player.hasPowerUps = false
             end
         end
     end
@@ -160,7 +221,8 @@ function World:update(dt)
 end
 
 function World:render()
-    World:PlayerStatsRender(self.player, self)
+    World:PlayerStatsRender(self.player)
+    self.powerUpSlot:render()
     -- renders the bullets
     for i, bullet in pairs(self.bullets) do
         bullet:render()
@@ -189,7 +251,7 @@ function World:PlayerStatsRender(player, self)
 
     -- draws hwo much ammo we have
     love.graphics.setFont(gFonts['small_font'])
-    love.graphics.print('Ammo   : ' .. player.ammo, 0, 60)
+    --love.graphics.print('Ammo   : ' .. player.ammo, 0, 60)
     -- prints amount of points we have
     love.graphics.print('Points  : ' .. player.points, 0, 100)
     -- prints how much money we have
@@ -198,5 +260,5 @@ function World:PlayerStatsRender(player, self)
     if not (player.currentState == 'shop') then
         love.graphics.printf('Distance: ' .. math.floor(player.distanceTravelled), 0, 0, VIRTUAL_WIDTH, 'right')
     end
-    self.powerUpSlot:render()
+    
 end

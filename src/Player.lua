@@ -7,6 +7,8 @@ function Player:init()
     self.dx = 0
     self.dy = 0
 
+    self.speed = PLAYER_SPEED
+
     self.width = 85
     self.height = 61
 
@@ -28,6 +30,8 @@ function Player:init()
     self.money = 99
     self.distanceTravelled = 0
     self.lives = 3
+
+    self.hasPowerUps = false
     -- reference to other things in the world
     self.invulnerable = false
     self.invulnerableBlink = true

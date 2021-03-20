@@ -33,13 +33,15 @@ background = love.graphics.newImage('graphics/space.png')
 
 gTextures = {
     ['space-craft'] = love.graphics.newImage('graphics/space-craft.png'),
-    ['buyables'] = love.graphics.newImage('graphics/buyables.png')
+    ['buyables'] = love.graphics.newImage('graphics/buyables.png'),
+    ['power-ups'] = love.graphics.newImage('graphics/power-ups.png')
 }
 
 gImages = {
     ['player'] = love.graphics.newQuad(702, 118, 85, 61, gTextures['space-craft']:getDimensions()),
     ['lives'] = love.graphics.newQuad(4 + 4 * 33, 4 + math.random(0, 4) * 33, 32, 32, gTextures['space-craft']:getDimensions()),
-    ['buyables'] = GenerateQuads(64, 64, gTextures['buyables'])
+    ['buyables'] = GenerateQuads(64, 64, gTextures['buyables']),
+    ['power-ups'] = GenerateQuads(96, 96, gTextures['power-ups'])
     --['player'] = love.graphics.newQuad(0, 0, 32, 32, gTextures['space-craft']:getDimensions())
 }
 gFonts = {
