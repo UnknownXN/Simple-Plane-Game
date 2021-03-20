@@ -1,8 +1,7 @@
 Shield = Class{__includes = GameObject}
-function Shield:init(def)
+function Shield:inti(def)
     GameObject:init(def)
-    self.texture = gTextures['space-craft']
-    self.image = gImages['lives']
+ 
 end
 function Shield:update(dt, player)
     self.x = player.x + player.width * 0.5
