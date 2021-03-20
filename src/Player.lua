@@ -25,7 +25,7 @@ function Player:init()
     self.speedPrice = 9
 
     self.points = 0
-    self.money = 0
+    self.money = 99
     self.distanceTravelled = 0
     self.lives = 3
     -- reference to other things in the world
@@ -37,6 +37,8 @@ function Player:init()
     self.shieldIsActive = false
 
     self.readyingNextShot = false
+
+    self.numberPowerUps = 0 
 end
 
 function Player:update(dt)

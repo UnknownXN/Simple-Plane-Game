@@ -8,7 +8,7 @@ function ShopState:init(def)
     self.buyables = {
         [1] = function (__, player)
             -- if the player has enough money, give him the power up. If not, empty text, and then put in a message saying he doesn't have enough money
-            if player.money and not player.AmmoLevel == 3 >= 8 then 
+            if player.money  >= player.ammoPrice and player.AmmoLevel < 3 then 
                 player.money = player.money - 8
                 player.maxAmmo = player.maxAmmo + 5
                 player.AmmoLevel = player.AmmoLevel + 1
@@ -18,13 +18,18 @@ function ShopState:init(def)
                 gStateMachine:change('play', {player = self.player, world = self.world})
             else
                 self.text = {}
-                table.insert(self.text, "Insufficient Balance\nPrice is " .. tostring(player.ammoPrice) .. ", but only " .. player.money)
+                if player.money < player.ammoPrice then
+                    table.insert(self.text, "Insufficient Balance\nPrice is " .. tostring(player.ammoPrice) .. ", but only " .. player.money)    
+                elseif player.AmmoLevel == 3 then
+                    table.insert(self.text, "Level is maxed " .. tostring(player.AmmoLevel))
+                end
+                
                 Timer.clear()
                 Timer.after(3, function () self.text = {} end)
             end
                  end,
         [2] = function (__, player)
-            if player.money and not player.speedLevel == 3 >= 9 then
+            if player.money >= player.speedPrice and player.speedLevel < 3 then
                 player.money = player.money - 9
                 player.speedMulti = 1.1
                 player.speedLevel = player.speedLevel + 1
@@ -33,13 +38,18 @@ function ShopState:init(def)
                 gStateMachine:change('play', {player = self.player, world = self.world})
             else
                 self.text = {}
-                table.insert(self.text, "Insufficient Balance\nPrice is " .. tostring(player.speedPrice) .. ", but only " .. player.money)
+                if player.money < player.speedPrice then
+                    table.insert(self.text, "Insufficient Balance\nPrice is " .. tostring(player.speedPrice) .. ", but only " .. player.money)
+                elseif player.speedLevel == 3 then
+                    table.insert(self.text, "Leve is maxed" .. tostring(player.speedLevel))
+                end
+
                 Timer.clear()
                 Timer.after(3, function () self.text = {} end)
             end
         end,
         [3] = function (__, player)
-            if player.money and not player.bulletDamageLevel == 3 >= 10 then
+            if player.money >= player.bulletDamagePrice and player.bulletDamageLevel < 3 then
                 player.money = player.money - 10
                 player.bulletDamage = player.bulletDamage + 1
                 player.bulletDamageLevel = player.bulletDamageLevel + 1
@@ -48,7 +58,11 @@ function ShopState:init(def)
                 gStateMachine:change('play', {player = self.player, world = self.world})
             else
                 self.text = {}
-                table.insert(self.text, "Insufficient Balance\nPrice is " .. tostring(player.bulletDamagePrice) .. ", but only " .. player.money)
+                if player.money < player.bulletDamagePrice then
+                    table.insert(self.text, "Insufficient Balance\nPrice is " .. tostring(player.bulletDamagePrice) .. ", but only " .. player.money)
+                elseif player.bulletDamageLevel == 3 then
+                    table.insert(self.text, "Level is maxed" .. tostring(player.bulletDamageLevel))
+                end
                 Timer.clear()
                 Timer.after(3, function () self.text = {} end)
             end

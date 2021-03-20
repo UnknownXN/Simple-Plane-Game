@@ -12,7 +12,10 @@ function World:init(player)
     self.objects = {}
 
     self.shopDistance = 10000
-    
+        -- 4 is the boarder, and x and y ar offset by the boarder so you can still see the boarder
+    self.powerUpSlot = PicturePanel({x = VIRTUAL_WIDTH - 96 - 4, y = VIRTUAL_HEIGHT - 96 - 4, 
+        width = 96, height = 96, boarder = 4})
+    self.savedPowerUp = nil
     self.powerUps = {}
 end
 
@@ -25,28 +28,27 @@ function World:update(dt)
             GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 1, g = 0, b = 0, type = 'points',
                 onConsume = function () self.player.points = self.player.points + 500 end})
         end
-        if math.random(1, 180) == 1 then
+        if math.random(1, 60) == 1 then
             table.insert(self.objects,
             GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 0, g = 0, b = 1, type = 'shield',
                 onConsume = function () 
-                    self.player.shieldIsActive = true
+            
 
-                    local noShield = true
-                    if tableIsEmpty(self.powerUps) then 
-                        noShield = true
-                    else 
-                        
-                        for p, powerUp in pairs(self.powerUps) do
-                            if powerUp.type == 'shield' then
-                                noShield = false
-                            end
+                    -- if there isn't a power up, then appy it immediately
+                    if tableIsEmpty(self.powerUps) then
+                        table.insert(self.powerUps, Shield({x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
+                            radius = 64, type = 'shield', shape = 'circle', drawType = 'line'})) 
+                        for i , v in pairs(self.powerUps) do
+                            print(v.type)
                         end
-
-                    end
-                    if noShield then
-                        table.insert(self.powerUps, Shield{x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
-                        radius = 64, type = 'shield', shape = 'circle', drawType = 'line'}) 
-                    end
+                    -- else, save the power up to be added later.
+                    else
+                        if self.savedPowerUp == nil then
+                            self.savedPowerUp = Shield{x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
+                                radius = 64, type = 'shield', shape = 'circle', drawType = 'line'}
+                        end
+                    end    
+                        
                 end})
 
         end
@@ -60,6 +62,14 @@ function World:update(dt)
             table.insert(self.asteroids, 
                 Asteroid({x = math.random(50, VIRTUAL_WIDTH - 50), y = 0, width = math.random(40, 80), height = math.random(40, 80), pointValue = 100}))
         end
+    end
+    if self.savedPowerUp ~= nil then 
+        self.powerUpSlot.texture = self.savedPowerUp.texture
+        self.powerUpSlot.image = self.savedPowerUp.image
+    end
+    if love.keyboard.wasPressed('l') then
+        table.insert(self.powerUps, self.savedPowerUp)
+        self.savedPowerUp = nil
     end
     -- updates asteroids
     for a, asteroid in pairs(self.asteroids) do
@@ -145,12 +155,12 @@ function World:update(dt)
             table.remove(self.objects, o)
         end
     end
-    
+    self.powerUpSlot:update(dt)
     Timer.update(dt)
 end
 
 function World:render()
-    World:PlayerStatsRender(self.player)
+    World:PlayerStatsRender(self.player, self)
     -- renders the bullets
     for i, bullet in pairs(self.bullets) do
         bullet:render()
@@ -166,12 +176,12 @@ function World:render()
 
     for p, powerUp in pairs(self.powerUps) do
         -- collision debugging
-        love.graphics.rectangle('line', powerUp.x - powerUp.radius, powerUp.y - powerUp.radius, powerUp.radius*2, powerUp.radius * 2)
+        -- love.graphics.rectangle('line', powerUp.x - powerUp.radius, powerUp.y - powerUp.radius, powerUp.radius*2, powerUp.radius * 2)
         powerUp:render(self.player)
     end
 end
 
-function World:PlayerStatsRender(player)
+function World:PlayerStatsRender(player, self)
     love.graphics.setColor(1, 1, 1 ,1)
     for i = 0, player.lives - 1 do 
         love.graphics.draw(gTextures['space-craft'], gImages['lives'], i * 64, 0, 0, 1.5, 1.5)
@@ -188,4 +198,5 @@ function World:PlayerStatsRender(player)
     if not (player.currentState == 'shop') then
         love.graphics.printf('Distance: ' .. math.floor(player.distanceTravelled), 0, 0, VIRTUAL_WIDTH, 'right')
     end
+    self.powerUpSlot:render()
 end

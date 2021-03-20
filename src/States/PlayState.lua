@@ -13,9 +13,7 @@ function PlayState:init()
     }
     -- sets to a state
     PlayerStates:change('fly')
-    -- 4 is the boarder, and x and y ar offset by the boarder so you can still see the boarder
-    self.powerUpSlot = PicturePanel({x = VIRTUAL_WIDTH - 96 - 4, y = VIRTUAL_HEIGHT - 96 - 4, 
-        width = 96, height = 96, boarder = 4, texture = gTextures['space-craft'], image = gImages['lives']})
+
 end
 function PlayState:enter(enterParams)
     -- initializes instance of palyer and the world
@@ -54,5 +52,5 @@ function PlayState:render()
     -- renders everything in world (asteroids, bullets, etc)
     self.world:render()
 
-    self.powerUpSlot:render()
+  
 end
