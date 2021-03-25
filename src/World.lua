@@ -24,11 +24,16 @@ function World:init(player)
     -- then it'll be set back to nil, ready to store a new power up 
     -- if there's already a function, it'll get replaced
     self.savedPowerUp = nil
+
+    self.currentlyBossBattle = false
+
+    self.boss = nil
+    self.bossHasSpawned = false
 end
 
 
 function World:update(dt)
-    if not (self.player.distanceTravelled > self.shopDistance) then
+    if not (self.player.distanceTravelled > self.shopDistance) and not self.currentlyBossBattle then
         -- chance to spawn power up
         if math.random(1, 60) == 1 then
             table.insert(self.objects,
@@ -131,6 +136,22 @@ function World:update(dt)
         self.powerUpSlot.texture  = nil
         self.powerUpSlot.image = nil
     end
+    -- transition to boss
+    if not self.bossHasSpawned and self.player.distanceTravelled > 100 then
+        gStateMachine:change('boss', {player = self.player, world = self})
+        self.currentlyBossBattle = true
+        self.bossHasSpawned = true
+    end
+    -- boss related logic
+    if self.boss ~= nil then
+        for b, bullet in pairs(self.bullets) do
+            if bullet:collides(self.boss) then
+                self.boss.hp = self.boss.hp - self.player.bulletDamage
+                table.remove(self.bullets, b)
+                -- ideally add an animations
+            end
+        end
+    end 
 
     for a, asteroid in pairs(self.asteroids) do
         asteroid:update(dt)
@@ -217,6 +238,7 @@ function World:update(dt)
         end
     end
     self.powerUpSlot:update(dt)
+
     Timer.update(dt)
 end
 
