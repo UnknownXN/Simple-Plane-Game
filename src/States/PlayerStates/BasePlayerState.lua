@@ -13,17 +13,17 @@ function BaseUpdateMovement(dt, player)
     -- player updates
     -- movement
     if love.keyboard.isDown('up') then
-        player.dy = -PLAYER_SPEED * player.speedMulti
+        player.dy = -player.speed * player.speedMulti
     elseif love.keyboard.isDown('down') then
-        player.dy = PLAYER_SPEED * player.speedMulti
+        player.dy = player.speed * player.speedMulti
     else
         player.dy = 0
     end
 
     if love.keyboard.isDown('left') then
-        player.dx = -PLAYER_SPEED * player.speedMulti
+        player.dx = -player.speed * player.speedMulti
     elseif love.keyboard.isDown('right') then
-        player.dx = PLAYER_SPEED * player.speedMulti
+        player.dx = player.speed * player.speedMulti
     else
         player.dx = 0
     end

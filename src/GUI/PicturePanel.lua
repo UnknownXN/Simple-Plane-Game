@@ -10,8 +10,12 @@ function PicturePanel:init(def)
     self.image = def.image
 end
 function PicturePanel:update(dt)
+
 end
 function PicturePanel:render()
     self.panel:render()
-    love.graphics.draw(self.texture, self.image, self.x, self.y)
+    if self.texture ~= nil then
+        love.graphics.draw(self.texture, self.image, self.x, self.y)
+    end
+    love.graphics.setColor(1, 1, 1, 1)
 end
