@@ -125,7 +125,7 @@ function World:update(dt)
     end
 
     -- press l to used what ever power up is currently saved
-    if love.keyboard.wasPressed('l') then
+    if love.keyboard.wasPressed('l') and self.savedPowerUp ~= nil then
         self.savedPowerUp()
         self.savedPowerUp = nil
         self.powerUpSlot.texture  = nil
