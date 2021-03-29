@@ -1,9 +1,6 @@
 BossState = Class{__includes = BaseState}
 function BossState:init()
-    self.bosses = {
-        ['Cube'] = Cube()
-    }
-    self.currentBoss = self.bosses['Cube']
+
     
 end
 function BossState:enter(enterParams)
@@ -17,7 +14,10 @@ function BossState:enter(enterParams)
     }
     -- sets to a state
     PlayerStates:change('fly')
-    
+    self.bosses = {
+        ['Cube'] = Cube(self.player)
+    }
+    self.currentBoss = self.bosses['Cube']
     self.world.boss = self.currentBoss
 end
 function BossState:update(dt)
@@ -31,10 +31,22 @@ function BossState:update(dt)
         gStateMachine:change('play', {player = self.player, world = self.world})
 
     end
+    if self.currentBoss:collides(self.player) and self.player.invulnerable == false then
+        self.player.lives = self.player.lives - 1
+        self.player.invulnerable = true
+        Timer.after(2, function() self.player.invulnerable = false end)
+        if self.player.lives <= 0 then
+            gStateMachine:change('end', {distance = self.player.distanceTravelled,
+                points = self.player.points, money = self.player.money})
+        end
+    end
 end
 function BossState:render()
     self.world:render()
     self.player:render()
     PlayerStates:render()
     self.currentBoss:render()
+end
+function BossState:processAI()
+
 end
