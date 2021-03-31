@@ -40,9 +40,10 @@ function World:update(dt)
             GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 1, g = 0, b = 0, type = 'points',
                 onConsume = function () self.player.points = self.player.points + 500 end})
         end
-        if math.random(1, 180) == 1 then
+        if math.random(1, 60) == 1 then
             table.insert(self.objects,
-            GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 0, g = 0, b = 1, type = 'shield',
+            GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, texture = gTextures['power-ups-objects'], 
+                image = gImages['power-up-objects'], type = 'shield', animations = Animations{frames = {1, 2, 3, 4}, interval = 0.1},
                 onConsume = function () 
             
 
@@ -137,7 +138,7 @@ function World:update(dt)
         self.powerUpSlot.image = nil
     end
     -- transition to boss
-    if not self.bossHasSpawned and self.player.distanceTravelled > 100 then
+    if not self.bossHasSpawned and self.player.distanceTravelled > 5000 then
         gStateMachine:change('boss', {player = self.player, world = self})
         self.currentlyBossBattle = true
         self.bossHasSpawned = true

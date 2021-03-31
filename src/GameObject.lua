@@ -22,9 +22,16 @@ function GameObject:init(def)
     -- if alpha is an argument set it to that, else 1
     self.alpha = def.alpha or 1
 
-
+  
+    self.animations = def.animations
+    
 end
 function GameObject:update(dt)
+    if self.animations ~= nil then
+        --print('update')
+        self.animations:update(dt)
+    end
+        
     self.y = self.y + self.dy * dt
     self.x = self.x + self.dx * dt
 end
@@ -58,7 +65,16 @@ function GameObject:render()
         end
         love.graphics.setColor(1, 1, 1, 1)
     else
-        love.graphics.draw(self.texture, self.image, self.x, self.y)
+        love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
+        if self.type == 'shield' then
+            print(self.animations:getCurrentFrame())
+            love.graphics.draw(self.texture, self.image[self.animations:getCurrentFrame()], self.x, self.y)
+        end
+        
+        
+        
+
+            
     end
   
 end
