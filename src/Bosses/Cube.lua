@@ -69,7 +69,7 @@ function Cube:move(self)
    
 end
 function Cube:attack(self)
-  
+    
     if self.y > VIRTUAL_HEIGHT then
         self.y = self.startingY - 100
         self.hasLooped = true    
@@ -82,12 +82,30 @@ function Cube:attack(self)
 
 end
 function Cube:prepareAttack(self)
-    self.attackdx = self.player.x - self.x 
+    -- finds in what direction the cube needs to go, and then gaves the ratio between the x and y
+    self.attackdy = self.player.y - self.y
+    self.attackdx = self.player.x - self.x
+    local temp = self.attackdx / self.attackdy
+    local offset
+    -- offset so you cant just hold left or right to dodge
+    if self.player.direction == 'right' then
+        offset = 200 + self.player.width
+        self.attackdx = self.player.dx + offsetX
+    elseif self.player.direction == 'left' then
+        offset = -200
+        self.attackdx = -self.player.x + offsetX
+    else
+        offset = 0
+        self.attackdx = -self.x + self.player.x + 0.5 *self.player.width + offsetX
+    end
+    -- go telegraph to player
     self.dy = -40
     self.dx = -self.attackdx
     if self.y < self.startingY - 40 then
-        self.dy = 800
-        self.dx = self.attackdx
+        -- sets a velocity to the boss
+        self.dy = (800)
+        -- multiplies it by the ratio between x and y so
+        self.dx = (800 * temp + offset)
         self.currentState = 'attack'
         
     end
