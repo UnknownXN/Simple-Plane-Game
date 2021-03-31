@@ -43,6 +43,7 @@ function Player:init()
     self.readyingNextShot = false
 
     self.numberPowerUps = 0 
+    self.direction = 'center'
 end
 
 function Player:update(dt)

@@ -22,10 +22,13 @@ function BaseUpdateMovement(dt, player)
 
     if love.keyboard.isDown('left') then
         player.dx = -player.speed * player.speedMulti
+        player.direction = 'left'
     elseif love.keyboard.isDown('right') then
         player.dx = player.speed * player.speedMulti
+        player.direction = 'right'
     else
         player.dx = 0
+        player.direction = 'center'
     end
 
     player.y = player.y + player.dy * dt

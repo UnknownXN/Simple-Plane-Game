@@ -4,7 +4,7 @@ function StateMachine:init(states)
 	self.empty = {
 		render = function() end,
 		update = function() end,
-		--processAI = function() end,
+		processAI = function() end,
 		enter = function() end,
 		--exit = function() end
 	}
@@ -30,6 +30,6 @@ end
 --[[
 	Used for states that can be controlled by the AI to influence update logic.
 ]]
--- function StateMachine:processAI(params, dt)
--- 	self.current:processAI(params, dt)
--- end
+function StateMachine:processAI(params, dt)
+	self.current:processAI(params, dt)
+end

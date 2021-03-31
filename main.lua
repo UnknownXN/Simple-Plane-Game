@@ -23,6 +23,7 @@ function love.load()
         ['start'] = function () return StartState() end,
         ['play'] = function () return PlayState() end,
         ['shop'] = function () return ShopState() end,
+        ['boss'] = function () return BossState() end,
         ['end'] = function () return EndState() end
     }
     gStateMachine:change('start')

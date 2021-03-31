@@ -24,7 +24,7 @@ function ShopState:init(def)
                     table.insert(self.text, "Level is maxed " .. tostring(player.AmmoLevel))
                 end
                 
-                Timer.clear()
+                --Timer.clear()
                 Timer.after(3, function () self.text = {} end)
             end
                  end,
@@ -44,7 +44,7 @@ function ShopState:init(def)
                     table.insert(self.text, "Leve is maxed" .. tostring(player.speedLevel))
                 end
 
-                Timer.clear()
+                --Timer.clear()
                 Timer.after(3, function () self.text = {} end)
             end
         end,
@@ -63,7 +63,7 @@ function ShopState:init(def)
                 elseif player.bulletDamageLevel == 3 then
                     table.insert(self.text, "Level is maxed" .. tostring(player.bulletDamageLevel))
                 end
-                Timer.clear()
+                --Timer.clear()
                 Timer.after(3, function () self.text = {} end)
             end
             

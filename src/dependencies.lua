@@ -12,12 +12,15 @@ require 'src/States/PlayState'
 require 'src/States/ShopState'
 require 'src/States/StartState'
 require 'src/States/EndState'
+require 'src/States/BossState'
 
 require 'src/Player'
 require 'src/Bullet'
 require 'src/World'
 require 'src/Asteroid'
 require 'src/GameObject'
+
+require 'src/Bosses/Cube'
 
 require 'src/GUI/Panel'
 require 'src/GUI/PicturePanel'

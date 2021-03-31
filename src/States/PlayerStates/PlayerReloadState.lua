@@ -25,7 +25,10 @@ function PlayerReloadState:update(dt)
     --     --Timer.clear()
     -- end)
     -- Timer.update(dt)
-    self.player.distanceTravelled = self.player.distanceTravelled +  PLAYER_SPEED * self.player.speedMulti * dt
+    if self.world.currentlyBossBattle == false then
+        self.player.distanceTravelled = self.player.distanceTravelled +  PLAYER_SPEED * self.player.speedMulti * dt
+    end
+        
 end
 function PlayerReloadState:render()
     self.player:render()

@@ -24,7 +24,9 @@ function PlayerFlyState:update(dt)
         print('reload')
     end
 
-    self.player.distanceTravelled = self.player.distanceTravelled +  PLAYER_SPEED * self.player.speedMulti * dt
+    if self.world.currentlyBossBattle == false then
+        self.player.distanceTravelled = self.player.distanceTravelled +  PLAYER_SPEED * self.player.speedMulti * dt
+    end
     --Timer.update(dt)
 end
 function PlayerFlyState:render()
