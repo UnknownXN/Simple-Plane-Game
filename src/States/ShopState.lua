@@ -71,9 +71,8 @@ function ShopState:init(def)
     }
 
     for i = 0, 2 do
-        -- fix this tomorrow
         table.insert(self.items, GameObject{x = PADDING + i * (VIRTUAL_WIDTH - 2 * PADDING - 64) / (3 - 1), y = -64, width = 64, height = 64, onConsume = self.buyables[i + 1],
-            texture = gTextures['buyables'], image = gImages['buyables'][i + 1]})
+            texture = BUYABLES[i + 1].texture, image = BUYABLES[i + 1].image, animations = Animations{frames = BUYABLES[i + 1].frames}})
     end
     for i, item in pairs(self.items) do 
         print(item.x)

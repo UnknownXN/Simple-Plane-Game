@@ -3,14 +3,13 @@ function GenerateQuads(width, height, texture)
     local imWidth, imHeight = texture:getDimensions()
     local numberQuadsX = imWidth / width
     local numberQuadsY = imHeight / height
-    local x = 0
-    local y = 0
-    for j = 0, numberQuadsY do
-        for i = 0, numberQuadsX do
-            local quad = love.graphics.newQuad(x, y * height, width, height, texture:getDimensions())
-            x = x + width
+    for y = 0, numberQuadsY - 1 do
+        for x = 0, numberQuadsX - 1 do
+            local quad = love.graphics.newQuad(x * width, y * height, width, height, texture:getDimensions())
+           
             table.insert(quads, quad)
         end
+     
     end
     return quads
 end

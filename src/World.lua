@@ -37,13 +37,14 @@ function World:update(dt)
         -- chance to spawn power up
         if math.random(1, 60) == 1 then
             table.insert(self.objects,
-            GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = 0 - 16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 1, g = 0, b = 0, type = 'points',
+            GameObject{x = math.random(0, VIRTUAL_WIDTH - 32), y = 0 - 32, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, type = 'points',
+            texture = POWER_UPS['points'].texture, image = POWER_UPS['points'].image, animations = Animations{frames = POWER_UPS['points'].frames, interval = POWER_UPS['points'].interval},
                 onConsume = function () self.player.points = self.player.points + 500 end})
         end
-        if math.random(1, 60) == 1 then
+        if math.random(1, 180) == 1 then
             table.insert(self.objects,
-            GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, texture = gTextures['power-ups-objects'], 
-                image = gImages['power-up-objects'], type = 'shield', animations = Animations{frames = {1, 2, 3, 4}, interval = 0.1},
+            GameObject{x = math.random(0, VIRTUAL_WIDTH - 32), y = -32, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, texture = POWER_UPS['shield'].texture, 
+                image = POWER_UPS['shield'].image, type = 'shield', animations = Animations{frames = POWER_UPS['shield'].frames, interval = POWER_UPS['shield'].interval},
                 onConsume = function () 
             
 
@@ -66,8 +67,9 @@ function World:update(dt)
         end
         if math.random(1, 180) == 1 then
             table.insert(self.objects,
-            GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 0, g = 0.5, b = 0.5, type = 'infinite-bullets',
-            onConsume = function ()
+            GameObject{x = math.random(0, VIRTUAL_WIDTH - 32), y = -32, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, r = 0, g = 0.5, b = 0.5, type = 'infinite-bullets',
+                texture = POWER_UPS['infinite-bullets'].texture, image = POWER_UPS['infinite-bullets'].image, animations = Animations{frames = POWER_UPS['infinite-bullets'].frames, interval = POWER_UPS['infinite-bullets'].interval},
+                onConsume = function ()
                 if not self.player.hasPowerUps then
                     self.player.hasPowerUps = true
                     self.player.ammo = 9999
@@ -91,7 +93,8 @@ function World:update(dt)
         end
         if math.random(1, 180) == 1 then
             table.insert(self.objects,
-                GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 16, height = 16, r = 0, g = 1, b = 0, type = 'speed',
+                GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, r = 0, g = 1, b = 0, type = 'speed',
+                texture = POWER_UPS['speed'].texture, image = POWER_UPS['speed'].image, animations = Animations{frames = POWER_UPS['speed'].frames, interval = POWER_UPS['speed'].interval},
                     onConsume = function () 
                         if not self.player.hasPowerUps then 
                             self.player.speedMulti = 1.5
@@ -120,7 +123,8 @@ function World:update(dt)
         end
         if math.random(1, 150) == 1 then
             table.insert(self.objects,
-                GameObject({x = math.random(0, VIRTUAL_WIDTH - 64), y = -64, dx = 0, dy = POWERUP_OBJECT_SPEED, shape = 'circle', r = 1, g = 1, b = 0, radius = 32, type = 'coins',
+                GameObject({x = math.random(0, VIRTUAL_WIDTH - 64), y = -64, dx = 0, dy = POWERUP_OBJECT_SPEED, animations = Animations{frames = COINS['supeks-coin'].frames, interval = COINS['supeks-coin'].interval}, 
+                    shape = 'rectangle', texture = COINS['supeks-coin'].texture, image = COINS['supeks-coin'].image,  type = 'coins', width = 64, height = 64,
                     onConsume = function () self.player.money = self.player.money + 1 end}))
         end
         -- change to spawn asteroids

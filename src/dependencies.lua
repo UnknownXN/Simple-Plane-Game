@@ -26,6 +26,8 @@ require 'src/Bosses/Cube'
 require 'src/GUI/Panel'
 require 'src/GUI/PicturePanel'
 
+require 'src/DATA_DRIVEN_DESIGN'
+
 require 'src/PowerUps/Shield'
 
 require 'src/States/PlayerStates/PlayerFlyState'
@@ -39,7 +41,8 @@ gTextures = {
     ['space-craft'] = love.graphics.newImage('graphics/space-craft.png'),
     ['buyables'] = love.graphics.newImage('graphics/buyables.png'),
     ['power-ups'] = love.graphics.newImage('graphics/power-ups.png'),
-    ['power-ups-objects'] = love.graphics.newImage('graphics/power-ups-object.png')
+    ['power-ups-objects'] = love.graphics.newImage('graphics/power-ups-object.png'),
+    ['supeks-coin'] = love.graphics.newImage('graphics/supeks-coin.png')
 }
 
 gImages = {
@@ -47,7 +50,8 @@ gImages = {
     ['lives'] = love.graphics.newQuad(4 + 4 * 33, 4 + math.random(0, 4) * 33, 32, 32, gTextures['space-craft']:getDimensions()),
     ['buyables'] = GenerateQuads(64, 64, gTextures['buyables']),
     ['power-ups'] = GenerateQuads(96, 96, gTextures['power-ups']),
-    ['power-up-objects'] = GenerateQuads(32, 32, gTextures['power-ups-objects'])
+    ['power-up-objects'] = GenerateQuads(32, 32, gTextures['power-ups-objects']),
+    ['supeks-coin'] = GenerateQuads(64, 64, gTextures['supeks-coin'])
     --['player'] = love.graphics.newQuad(0, 0, 32, 32, gTextures['space-craft']:getDimensions())
 }
 gFonts = {

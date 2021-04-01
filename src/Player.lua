@@ -27,6 +27,7 @@ function Player:init()
     self.speedPrice = 9
 
     self.points = 0
+    
     self.money = 0
     self.distanceTravelled = 0
     self.lives = 3

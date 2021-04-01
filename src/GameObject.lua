@@ -65,11 +65,10 @@ function GameObject:render()
         end
         love.graphics.setColor(1, 1, 1, 1)
     else
-        love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
-        if self.type == 'shield' then
-            print(self.animations:getCurrentFrame())
-            love.graphics.draw(self.texture, self.image[self.animations:getCurrentFrame()], self.x, self.y)
-        end
+        -- love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
+        
+        love.graphics.draw(gTextures[self.texture], gImages[self.image][self.animations:getCurrentFrame()], self.x, self.y)
+        
         
         
         
