@@ -142,7 +142,8 @@ function World:update(dt)
         self.powerUpSlot.image = nil
     end
     -- transition to boss
-    if not self.bossHasSpawned and self.player.distanceTravelled > 1000 then
+    -- ideally the 5000 would be a table that is tied to the number of bosses that have been defeated
+    if not self.bossHasSpawned and self.player.distanceTravelled > 5000 then
         gStateMachine:change('boss', {player = self.player, world = self})
         self.currentlyBossBattle = true
         self.bossHasSpawned = true
