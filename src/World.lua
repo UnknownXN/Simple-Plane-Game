@@ -142,7 +142,7 @@ function World:update(dt)
         self.powerUpSlot.image = nil
     end
     -- transition to boss
-    if not self.bossHasSpawned and self.player.distanceTravelled > 5000 then
+    if not self.bossHasSpawned and self.player.distanceTravelled > 1000 then
         gStateMachine:change('boss', {player = self.player, world = self})
         self.currentlyBossBattle = true
         self.bossHasSpawned = true
@@ -189,6 +189,7 @@ function World:update(dt)
                 self.player.hasPowerUps = false
             end
         end
+
     end
     -- updates game objects so they move
     for o, object in pairs(self.objects) do

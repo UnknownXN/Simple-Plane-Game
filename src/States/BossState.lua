@@ -31,6 +31,15 @@ function BossState:update(dt)
         gStateMachine:change('play', {player = self.player, world = self.world})
 
     end
+    for p, powerup in pairs(self.world.powerUps) do
+        if powerup:collides(self.currentBoss) and self.player.invulnerable == false then
+          
+            self.player.invulnerable = true
+            Timer.after(2, function() self.player.invulnerable = false end)
+            
+            table.remove(self.world.powerUps, p)
+        end
+    end
     if self.currentBoss:collides(self.player) and self.player.invulnerable == false then
         self.player.lives = self.player.lives - 1
         self.player.invulnerable = true
@@ -40,6 +49,7 @@ function BossState:update(dt)
                 points = self.player.points, money = self.player.money})
         end
     end
+
 end
 function BossState:render()
     self.world:render()
