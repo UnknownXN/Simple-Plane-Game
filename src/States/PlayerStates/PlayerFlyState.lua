@@ -14,14 +14,15 @@ function PlayerFlyState:update(dt)
 
         -- substracts ammo by 1
         self.player.ammo = self.player.ammo - 1
-        print(self.player.ammo)
         self.player.readyingNextShot = true
         Timer.after(0.5, function () self.player.readyingNextShot = false end)
+        -- plays audio but stops it first so the sounds don't mix
+        gAudio['bullets']:stop()
+        gAudio['bullets']:play()
     end
 
     if self.player.ammo == 0 then
         PlayerStates:change('reload')
-        print('reload')
     end
 
     if self.world.currentlyBossBattle == false then

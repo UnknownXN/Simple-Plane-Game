@@ -39,14 +39,19 @@ function World:update(dt)
             table.insert(self.objects,
             GameObject{x = math.random(0, VIRTUAL_WIDTH - 32), y = 0 - 32, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, type = 'points',
             texture = POWER_UPS['points'].texture, image = POWER_UPS['points'].image, animations = Animations{frames = POWER_UPS['points'].frames, interval = POWER_UPS['points'].interval},
-                onConsume = function () self.player.points = self.player.points + 500 end})
+                onConsume = function () 
+                    self.player.points = self.player.points + 200
+                    gAudio['pickup']:stop()
+                    gAudio['pickup']:play()    
+                end})
         end
-        if math.random(1, 180) == 1 then
+        if math.random(1, 360) == 1 then
             table.insert(self.objects,
             GameObject{x = math.random(0, VIRTUAL_WIDTH - 32), y = -32, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, texture = POWER_UPS['shield'].texture, 
                 image = POWER_UPS['shield'].image, type = 'shield', animations = Animations{frames = POWER_UPS['shield'].frames, interval = POWER_UPS['shield'].interval},
                 onConsume = function () 
-            
+                    gAudio['powerup-1']:stop()
+                    gAudio['powerup-1']:play()
 
                     -- if there isn't a power up, then appy it immediately
                     if not self.player.hasPowerUps then
@@ -58,6 +63,7 @@ function World:update(dt)
                         self.savedPowerUp = function ()
                             table.insert(self.powerUps, Shield{x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
                             radius = 64, type = 'shield', shape = 'circle', drawType = 'line'}) 
+                            self.player.hasPowerUps = true
                         end
                         self.powerUpSlot.texture = gTextures['power-ups']
                         self.powerUpSlot.image = gImages['power-ups'][1]
@@ -65,11 +71,13 @@ function World:update(dt)
                         
                 end})
         end
-        if math.random(1, 180) == 1 then
+        if math.random(1, 360) == 1 then
             table.insert(self.objects,
             GameObject{x = math.random(0, VIRTUAL_WIDTH - 32), y = -32, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, r = 0, g = 0.5, b = 0.5, type = 'infinite-bullets',
                 texture = POWER_UPS['infinite-bullets'].texture, image = POWER_UPS['infinite-bullets'].image, animations = Animations{frames = POWER_UPS['infinite-bullets'].frames, interval = POWER_UPS['infinite-bullets'].interval},
                 onConsume = function ()
+                gAudio['powerup-1']:stop()
+                gAudio['powerup-1']:play()
                 if not self.player.hasPowerUps then
                     self.player.hasPowerUps = true
                     self.player.ammo = 9999
@@ -86,18 +94,21 @@ function World:update(dt)
                             self.player.hasPowerUps = false
                         end)
                     end
+
                     self.powerUpSlot.texture = gTextures['power-ups']
                     self.powerUpSlot.image = gImages['power-ups'][3]
                 end
             end})
         end
-        if math.random(1, 180) == 1 then
+        if math.random(1, 360) == 1 then
             table.insert(self.objects,
                 GameObject{x = math.random(0, VIRTUAL_WIDTH - 16), y = -16, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, r = 0, g = 1, b = 0, type = 'speed',
                 texture = POWER_UPS['speed'].texture, image = POWER_UPS['speed'].image, animations = Animations{frames = POWER_UPS['speed'].frames, interval = POWER_UPS['speed'].interval},
                     onConsume = function () 
+                        gAudio['powerup-1']:stop()
+                        gAudio['powerup-1']:play()
                         if not self.player.hasPowerUps then 
-                            self.player.speedMulti = 1.5
+                            self.player.speedMulti = 2
                             self.player.hasPowerUps = true
                             Timer.after( 10, function () 
                                 self.player.speedMulti = (1 + 0.1 * (self.player.speedLevel - 1))
@@ -125,17 +136,23 @@ function World:update(dt)
             table.insert(self.objects,
                 GameObject({x = math.random(0, VIRTUAL_WIDTH - 64), y = -64, dx = 0, dy = POWERUP_OBJECT_SPEED, animations = Animations{frames = COINS['supeks-coin'].frames, interval = COINS['supeks-coin'].interval}, 
                     shape = 'rectangle', texture = COINS['supeks-coin'].texture, image = COINS['supeks-coin'].image,  type = 'coins', width = 64, height = 64,
-                    onConsume = function () self.player.money = self.player.money + 1 end}))
+                    onConsume = function () 
+                        self.player.money = self.player.money + 1 
+                        gAudio['coins']:stop()
+                        gAudio['coins']:play()
+                    end}))
         end
         -- change to spawn asteroids
         if math.random(1, 75) == 1 then
             table.insert(self.asteroids, 
-                Asteroid({x = math.random(50, VIRTUAL_WIDTH - 50), y = 0, width = math.random(40, 80), height = math.random(40, 80), pointValue = 100}))
+                Asteroid({x = math.random(50, VIRTUAL_WIDTH - 50), y = 0, width = math.random(40, 80), height = math.random(40, 80), pointValue = 500}))
         end
     end
 
     -- press l to used what ever power up is currently saved
-    if love.keyboard.wasPressed('l') and self.savedPowerUp ~= nil then
+    if (love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')) and self.savedPowerUp ~= nil then
+        gAudio['powerup-2']:stop()
+        gAudio['powerup-2']:play()
         self.savedPowerUp()
         self.savedPowerUp = nil
         self.powerUpSlot.texture  = nil
@@ -143,7 +160,7 @@ function World:update(dt)
     end
     -- transition to boss
     -- ideally the 5000 would be a table that is tied to the number of bosses that have been defeated
-    if not self.bossHasSpawned and self.player.distanceTravelled > 5000 then
+    if not self.bossHasSpawned and self.player.distanceTravelled > 4999 then
         gStateMachine:change('boss', {player = self.player, world = self})
         self.currentlyBossBattle = true
         self.bossHasSpawned = true
@@ -153,6 +170,8 @@ function World:update(dt)
         for b, bullet in pairs(self.bullets) do
             if bullet:collides(self.boss) then
                 self.boss.hp = self.boss.hp - self.player.bulletDamage
+                gAudio['explosion']:stop()
+                gAudio['explosion']:play()
                 table.remove(self.bullets, b)
                 -- ideally add an animations
             end
@@ -164,16 +183,16 @@ function World:update(dt)
         if asteroid:collides(self.player) and not self.player.invulnerable then
             -- takes  a life away
             self.player.lives = self.player.lives - 1
+            -- don't need to stop cause player gets invulnerability
+            gAudio['damaged']:play()
             -- makes player invulnerable
             self.player.invulnerable = true
-            -- removes asteroid
-            table.remove(self.asteroids, a)
             -- makes player vulnerable again after 2 seconds
             Timer.after(2, function() self.player.invulnerable = false end)
             -- game over if you run out of lives
             if self.player.lives <= 0 then
                 gStateMachine:change('end', {distance = self.player.distanceTravelled,
-                    points = self.player.points, money = self.player.money})
+                    points = self.player.points, money = self.player.money, playerCraft = self.player.playerCraft})
             end
             -- removes asteroid
             table.remove(self.asteroids, a)
@@ -202,17 +221,20 @@ function World:update(dt)
         for b, bullet in pairs(self.bullets) do
             -- if so, then remove both objects, add a sound later, and give the player some points
             if bullet:collides(asteroid) then
-                
+                gAudio['explosion']:stop()
+                gAudio['explosion']:play()
                 table.remove(self.bullets, b)
                 asteroid.hp = asteroid.hp - self.player.bulletDamage
                 if asteroid.hp <= 0 then
                     table.remove(self.asteroids, a)
                     self.player.points = self.player.points + asteroid.pointValue
                 end
+
                 
             end
         end
     end
+
     -- updates the bullets
     for i, bullet in pairs(self.bullets) do
         bullet:update(dt)

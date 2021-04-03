@@ -1,6 +1,6 @@
 Player = Class{}
 
-function Player:init()
+function Player:init(playerCraft)
     self.x = VIRTUAL_WIDTH / 2 - 42
     self.y = VIRTUAL_HEIGHT * 5 / 6
 
@@ -9,8 +9,8 @@ function Player:init()
 
     self.speed = PLAYER_SPEED
 
-    self.width = 85
-    self.height = 61
+    self.width = 96
+    self.height = 64
 
     self.ammo = 5
     self.maxAmmo = 5
@@ -45,6 +45,8 @@ function Player:init()
 
     self.numberPowerUps = 0 
     self.direction = 'center'
+    
+    self.playerCraft = playerCraft or 1
 end
 
 function Player:update(dt)
@@ -102,7 +104,7 @@ function Player:render()
             love.graphics.setColor(1, 1, 1, 0.5)
         end
     end
-    love.graphics.draw(gTextures['space-craft'], gImages['player'], self.x, self.y)
+    love.graphics.draw(gTextures['crafts'],gImages['craft'][self.playerCraft] , self.x, self.y)
 
     love.graphics.setColor(1, 1, 1, 1)
 end

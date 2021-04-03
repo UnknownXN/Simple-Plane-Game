@@ -11,7 +11,7 @@ function Cube:init(player)
     self.attackdy = 0
     self.attackdx = 0
 
-    self.hp = 10
+    self.hp = 25
     self.distanceSpawn = 5000
     self.cubeTimers = {
         ['x'] = 0,
@@ -25,6 +25,11 @@ function Cube:init(player)
     }
     self.currentState = 'move'
     self.hasLooped = false
+
+    self.onDefeat = function (player)
+        player.money = player.money + 5
+        player.points = player.points + 5000
+    end
 end
 function Cube:update(dt)
     self.stateMachine[self.currentState]()

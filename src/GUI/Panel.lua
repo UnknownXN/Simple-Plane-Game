@@ -15,4 +15,5 @@ function Panel:render()
     love.graphics.rectangle('fill', self.x - self.boarder, self.y - self.boarder, self.width + self.boarder * 2, self.height + self.boarder * 2, 3)
     love.graphics.setColor(0.5, 0.5, 0.5, 1)
     love.graphics.rectangle('fill', self.x, self.y, self.width, self.height, 3)
+    
 end

@@ -3,10 +3,6 @@ math.randomseed(os.time())
 require 'src/dependencies'
 require 'src/constants'
 function love.load()
-    
-
-    player_craft = math.random(1, 5)
-
     love.window.setTitle('Space Wars')
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
@@ -16,11 +12,16 @@ function love.load()
     offsetY = 0
     offsetX = 0
 
+    gAudio['explosion']:setVolume(0.25)
+    gAudio['powerup-1']:setVolume(0.25)
+    gAudio['bullets']:setVolume(0.25)
+
     backgroundWidth, backgroundHeight = background:getDimensions()
 
     -- statemachine implementation
     gStateMachine = StateMachine{
         ['start'] = function () return StartState() end,
+        ['select-craft'] = function () return CraftSelectState() end,
         ['play'] = function () return PlayState() end,
         ['shop'] = function () return ShopState() end,
         ['boss'] = function () return BossState() end,

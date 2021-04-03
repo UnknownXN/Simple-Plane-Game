@@ -3,10 +3,11 @@ function EndState:enter(params)
     self.distance = params.distance
     self.points = params.points
     self.money = params.money
+    self.playerCraft = params.playerCraft
 end
 function EndState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-        gStateMachine:change('start')
+        gStateMachine:change('start', {playerCraft = self.playerCraft})
     end
 end
 function EndState:render()

@@ -1,24 +1,24 @@
 PlayState = Class{__includes = BaseState}
 
-function PlayState:init()   
-    -- initializes instance of palyer and the world
-    self.player =  Player()
-    self.world = World(self.player)
-    
-    -- statemachine for the player
-    PlayerStates = StateMachine{
-        ['fly'] = function () return PlayerFlyState(self.player, self.world) end,
-        ['reload'] = function () return PlayerReloadState(self.player, self.world) end,
-        ['shop'] = function () return PlayerShopState(self.player, self.world) end
-    }
-    -- sets to a state
-    PlayerStates:change('fly')
+-- function PlayState:init()   
+--     -- initializes instance of palyer and the world
+--     self.player =  Player()
+--     self.world = World(self.player)
+--     --print(self.player)
+--     -- statemachine for the player
+--     PlayerStates = StateMachine{
+--         ['fly'] = function () return PlayerFlyState(self.player, self.world) end,
+--         ['reload'] = function () return PlayerReloadState(self.player, self.world) end,
+--         ['shop'] = function () return PlayerShopState(self.player, self.world) end
+--     }
+--     -- sets to a state
+--     PlayerStates:change('fly')
 
-end
+-- end
 function PlayState:enter(enterParams)
     -- initializes instance of palyer and the world
-    self.player =  enterParams.player
-    self.world = enterParams.world
+    self.player =  enterParams.player or Player(enterParams.playerCraft)
+    self.world = enterParams.world or World(self.player)
 
     -- statemachine for the player
     PlayerStates = StateMachine{
@@ -28,7 +28,6 @@ function PlayState:enter(enterParams)
     }
     -- sets to a state
     PlayerStates:change('fly')
-    print('enter')
 end
 function PlayState:update(dt)
     self.player:update(dt)

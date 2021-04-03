@@ -3,19 +3,25 @@ StartState = Class{__includes = BaseState}
 function StartState:init()
     -- to index and call later
     self.options = {
-        [1] = function () gStateMachine:change('play') end,
-        [2] = function () love.event.quit() end
+        [1] = function () gStateMachine:change('play', {playerCraft = 1}) end,
+        [2] = function () gStateMachine:change('select-craft') end,
+        [3] = function () love.event.quit() end
     }
     self.selected = 1
     -- text for each of the options
     self.selection = {
-        'Start', 'Quit'
+        'Start', 'Select Craft', 'Quit'
     }
 end
-
+function StartState:enter(enterParams)
+    -- if you enter craftselectstate, this will get called
+    self.options[1] = function () gStateMachine:change('play',  {playerCraft = enterParams.playerCraft}) end
+end
 function StartState:update(dt)
+
     if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
        -- index into self.options and call the function
+       gAudio['select']:play()
        self.options[self.selected]()
     end
 
@@ -26,12 +32,16 @@ function StartState:update(dt)
         else
             self.selected = self.selected - 1
         end
+        gAudio['menu-move']:stop()
+        gAudio['menu-move']:play()
     elseif love.keyboard.wasPressed('down') then
         if self.selected == #self.options then
             self.selected = 1
         else
             self.selected = self.selected + 1
         end
+        gAudio['menu-move']:stop()
+        gAudio['menu-move']:play()
     end
 
     -- selection debugging
@@ -62,5 +72,5 @@ function StartState:render()
     -- reset to normal color
     love.graphics.setColor(1, 1, 1, 1)
     -- change to reference to player width later
-    love.graphics.draw(gTextures['space-craft'], gImages['player'], VIRTUAL_WIDTH / 2 - 42, VIRTUAL_HEIGHT * 5/ 6)
+    --love.graphics.draw(gTextures['space-craft'], gImages['player'], VIRTUAL_WIDTH / 2 - 42, VIRTUAL_HEIGHT * 5/ 6)
 end

@@ -13,8 +13,10 @@ function PicturePanel:update(dt)
 
 end
 function PicturePanel:render()
+    
     self.panel:render()
     if self.texture ~= nil then
+        love.graphics.setColor(1, 1, 1, 1)
         love.graphics.draw(self.texture, self.image, self.x, self.y)
     end
     love.graphics.setColor(1, 1, 1, 1)

@@ -12,6 +12,7 @@ require 'src/States/BaseState'
 require 'src/States/PlayState'
 require 'src/States/ShopState'
 require 'src/States/StartState'
+require 'src/States/CraftSelectState'
 require 'src/States/EndState'
 require 'src/States/BossState'
 
@@ -39,6 +40,7 @@ background = love.graphics.newImage('graphics/space.png')
 
 gTextures = {
     ['space-craft'] = love.graphics.newImage('graphics/space-craft.png'),
+    ['crafts'] = love.graphics.newImage('graphics/planes.png'),
     ['buyables'] = love.graphics.newImage('graphics/buyables.png'),
     ['power-ups'] = love.graphics.newImage('graphics/power-ups.png'),
     ['power-ups-objects'] = love.graphics.newImage('graphics/power-ups-object.png'),
@@ -47,6 +49,7 @@ gTextures = {
 
 gImages = {
     ['player'] = love.graphics.newQuad(702, 118, 85, 61, gTextures['space-craft']:getDimensions()),
+    ['craft'] = GenerateQuads(96, 64, gTextures['crafts']),
     ['lives'] = love.graphics.newQuad(4 + 4 * 33, 4 + math.random(0, 4) * 33, 32, 32, gTextures['space-craft']:getDimensions()),
     ['buyables'] = GenerateQuads(64, 64, gTextures['buyables']),
     ['power-ups'] = GenerateQuads(96, 96, gTextures['power-ups']),
@@ -56,6 +59,20 @@ gImages = {
 }
 gFonts = {
     ['large_font'] = love.graphics.newFont('fonts/font.ttf', 128),
+    ['large_medium_font'] = love.graphics.newFont('fonts/font.ttf', 96),
     ['medium_font'] = love.graphics.newFont('fonts/font.ttf', 64),
     ['small_font'] = love.graphics.newFont('fonts/font.ttf', 32)
+}
+gAudio = {
+    ['pickup'] = love.audio.newSource('audio/coin.wav', 'static'),
+    ['bullets'] = love.audio.newSource('audio/bullets.wav', 'static'),
+    ['damaged'] = love.audio.newSource('audio/damaged.wav', 'static'),
+    ['powerup-1'] = love.audio.newSource('audio/powerup-1.wav', 'static'),
+    ['powerup-2'] = love.audio.newSource('audio/powerup-2.wav', 'static'),
+    ['menu-move'] = love.audio.newSource('audio/menu-move.wav', 'static'),
+    ['select'] = love.audio.newSource('audio/select.wav', 'static'),
+    ['explosion'] = love.audio.newSource('audio/explosion.wav', 'static'),
+    ['no-menu-move'] = love.audio.newSource('audio/no-select.wav', 'static'),
+    ['coins'] = love.audio.newSource('audio/pickup.wav', 'static'),
+    ['win'] = love.audio.newSource('audio/win.wav', 'static')
 }

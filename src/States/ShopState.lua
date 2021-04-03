@@ -69,14 +69,14 @@ function ShopState:init(def)
             
         end
     }
-
+    -- inserts objects to buy into self.items
     for i = 0, 2 do
         table.insert(self.items, GameObject{x = PADDING + i * (VIRTUAL_WIDTH - 2 * PADDING - 64) / (3 - 1), y = -64, width = 64, height = 64, onConsume = self.buyables[i + 1],
             texture = BUYABLES[i + 1].texture, image = BUYABLES[i + 1].image, animations = Animations{frames = BUYABLES[i + 1].frames}})
     end
-    for i, item in pairs(self.items) do 
-        print(item.x)
-    end
+    -- for i, item in pairs(self.items) do 
+    --     print(item.x)
+    -- end
 end
 function ShopState:enter(enterParams)
     self.player = enterParams.player
@@ -84,7 +84,7 @@ function ShopState:enter(enterParams)
     PlayerStates:change('shop')
     for i, item in pairs(self.items) do
         Timer.tween(0.5, {[item] = {y = VIRTUAL_HEIGHT / 2 - 128}})
-        print(item.y)
+        --print(item.y)
     end
 end
 function ShopState:update(dt)

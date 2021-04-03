@@ -8,23 +8,15 @@ function PlayerReloadState:init(player, world)
     self.player.currentState = 'reload'
 end
 function PlayerReloadState:update(dt)
+    -- timer to keep track of time and see if it's been 2 seconds
     self.stateTimer = self.stateTimer + dt
     BaseUpdateMovement(dt, self.player)
     if self.stateTimer > 2 then
         self.stateTimer = 0
         PlayerStates:change('fly') 
         self.player.ammo = self.player.maxAmmo
-        print('change to fly')
     end
-    -- issue seems like timer isn't resetting, bc after the first delay, there's no more delay
-    -- Timer.after(2, function() 
-        
-    --     PlayerStates:change('fly') 
-    --     self.player.ammo = 5
-    --     print('change to fly')
-    --     --Timer.clear()
-    -- end)
-    -- Timer.update(dt)
+
     if self.world.currentlyBossBattle == false then
         self.player.distanceTravelled = self.player.distanceTravelled +  PLAYER_SPEED * self.player.speedMulti * dt
     end
