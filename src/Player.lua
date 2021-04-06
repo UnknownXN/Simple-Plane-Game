@@ -32,7 +32,7 @@ function Player:init(playerCraft)
     self.distanceTravelled = 0
     self.lives = 3
 
-    self.hasPowerUps = false
+    --self.hasPowerUps = false
     -- reference to other things in the world
     self.invulnerable = false
     self.invulnerableBlink = true

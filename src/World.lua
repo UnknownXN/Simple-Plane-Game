@@ -53,24 +53,21 @@ function World:update(dt)
                     gAudio['powerup-1']:stop()
                     gAudio['powerup-1']:play()
 
-                    -- if there isn't a power up, then appy it immediately
-                    if not self.player.hasPowerUps then
-                        self.player.hasPowerUps = true
+     
+                    -- save the power up for when player later presses enter
+                    
+                    self.savedPowerUp = function ()
                         table.insert(self.powerUps, Shield{x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
-                            radius = 64, type = 'shield', shape = 'circle', drawType = 'line'}) 
-                    -- else, save the power up to be added later.
-                    else
-                        self.savedPowerUp = function ()
-                            table.insert(self.powerUps, Shield{x = self.player.x + self.player.width * 0.5, y = self.player.y + self.player.height * 0.5, dx = 0, dy = 0, 
-                            radius = 64, type = 'shield', shape = 'circle', drawType = 'line'}) 
-                            self.player.hasPowerUps = true
-                        end
-                        self.powerUpSlot.texture = gTextures['power-ups']
-                        self.powerUpSlot.image = gImages['power-ups'][1]
-                    end    
+                        radius = 64, type = 'shield', shape = 'circle', drawType = 'line'}) 
+                        
+                    end
+                    self.powerUpSlot.texture = gTextures['power-ups']
+                    self.powerUpSlot.image = gImages['power-ups'][1]
+                    
                         
                 end})
         end
+        print(self.player.hasPowerUps)
         if math.random(1, 360) == 1 then
             table.insert(self.objects,
             GameObject{x = math.random(0, VIRTUAL_WIDTH - 32), y = -32, dx = 0, dy = POWERUP_OBJECT_SPEED, width = 32, height = 32, r = 0, g = 0.5, b = 0.5, type = 'infinite-bullets',
@@ -78,27 +75,20 @@ function World:update(dt)
                 onConsume = function ()
                 gAudio['powerup-1']:stop()
                 gAudio['powerup-1']:play()
-                if not self.player.hasPowerUps then
-                    self.player.hasPowerUps = true
-                    self.player.ammo = 9999
-                    Timer.after(10, function ()
-                        self.player.ammo = self.player.maxAmmo
-                        self.player.hasPowerUps = false
-                    end)
-                else 
+        
                     self.savedPowerUp = function ()
-                        self.player.hasPowerUps = true
+                        
                         self.player.ammo = 9999
-                        Timer.after(10, function ()
+                        Timer.after(20, function ()
                             self.player.ammo = self.player.maxAmmo
-                            self.player.hasPowerUps = false
+                            
                         end)
                     end
 
                     self.powerUpSlot.texture = gTextures['power-ups']
                     self.powerUpSlot.image = gImages['power-ups'][3]
                 end
-            end})
+            })
         end
         if math.random(1, 360) == 1 then
             table.insert(self.objects,
@@ -107,30 +97,23 @@ function World:update(dt)
                     onConsume = function () 
                         gAudio['powerup-1']:stop()
                         gAudio['powerup-1']:play()
-                        if not self.player.hasPowerUps then 
+           
+
+                        
+                        self.savedPowerUp = function ()
                             self.player.speedMulti = 2
-                            self.player.hasPowerUps = true
-                            Timer.after( 10, function () 
+                            
+                            Timer.after(20, function () 
                                 self.player.speedMulti = (1 + 0.1 * (self.player.speedLevel - 1))
-                                self.player.hasPowerUps = false 
+                                 
                             end)
-                        else
-                            self.savedPowerUp = function ()
-                                self.player.speedMulti = 2
-                                self.player.hasPowerUps = true
-                                Timer.after( 10, function () 
-                                    self.player.speedMulti = (1 + 0.1 * (self.player.speedLevel - 1))
-                                    self.player.hasPowerUps = false 
-                                end)
-
-                            end
-                            self.powerUpSlot.texture = gTextures['power-ups']
-                            self.powerUpSlot.image = gImages['power-ups'][2]
-
+                        end
+                        self.powerUpSlot.texture = gTextures['power-ups']
+                        self.powerUpSlot.image = gImages['power-ups'][2]
                         end
                     
                         
-                    end})
+                    })
         end
         if math.random(1, 150) == 1 then
             table.insert(self.objects,
@@ -160,7 +143,7 @@ function World:update(dt)
     end
     -- transition to boss
     -- ideally the 5000 would be a table that is tied to the number of bosses that have been defeated
-    if not self.bossHasSpawned and self.player.distanceTravelled > 5000 then
+    if not self.bossHasSpawned and self.player.distanceTravelled > 4999 then
         gStateMachine:change('boss', {player = self.player, world = self})
         self.currentlyBossBattle = true
         self.bossHasSpawned = true
@@ -206,7 +189,7 @@ function World:update(dt)
             if powerUp:collides(asteroid) then
                 table.remove(self.powerUps, p)
                 table.remove(self.asteroids, a)
-                self.player.hasPowerUps = false
+                
             end
         end
 
