@@ -52,7 +52,7 @@ Things that I wanted to add, but decided not to for various reasons.
 ## Assets
 ### Planes from [kikitos animation library](https://github.com/kikito/anim8)
 ### [Space Background](https://opengameart.org/content/space-background-1) from opengameart.org
-### Sound effects for [Bfxr](https://www.bfxr.net/)
+### Sound effects for [Bfxr](https://www.bfxr.net/) 
 
 
 
