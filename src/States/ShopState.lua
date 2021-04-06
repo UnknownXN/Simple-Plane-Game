@@ -12,7 +12,7 @@ function ShopState:init(def)
                 player.money = player.money - 8
                 player.maxAmmo = player.maxAmmo + 5
                 player.AmmoLevel = player.AmmoLevel + 1
-                player.AmmoLevel = math.max(3, player.AmmoLevel)
+                player.AmmoLevel = math.min(3, player.AmmoLevel)
                 player.ammo = player.maxAmmo
                 player.ammoPrice = player.ammoPrice + 2
                 gStateMachine:change('play', {player = self.player, world = self.world})
@@ -33,7 +33,7 @@ function ShopState:init(def)
                 player.money = player.money - 9
                 player.speedLevel = player.speedLevel + 1
                 player.speedMulti = 1 + 0.1 * (player.speedLevel - 1)
-                player.speedLevel = math.max(3, player.speedLevel)
+                player.speedLevel = math.min(3, player.speedLevel)
                 player.speedPrice = player.speedPrice + 3
                 gStateMachine:change('play', {player = self.player, world = self.world})
             else
@@ -41,7 +41,7 @@ function ShopState:init(def)
                 if player.money < player.speedPrice then
                     table.insert(self.text, "Insufficient Balance\nPrice is " .. tostring(player.speedPrice) .. ", but only " .. player.money)
                 elseif player.speedLevel == 3 then
-                    table.insert(self.text, "Leve is maxed" .. tostring(player.speedLevel))
+                    table.insert(self.text, "Level is maxed" .. tostring(player.speedLevel))
                 end
 
                 --Timer.clear()
@@ -53,7 +53,7 @@ function ShopState:init(def)
                 player.money = player.money - 10
                 player.bulletDamage = player.bulletDamage + 1
                 player.bulletDamageLevel = player.bulletDamageLevel + 1
-                player.bulletDamageLevel = math.max(3, player.bulletDamageLevel)
+                player.bulletDamageLevel = math.min(3, player.bulletDamageLevel)
                 player.bulletDamagePrice = player.bulletDamagePrice + 4
                 gStateMachine:change('play', {player = self.player, world = self.world})
             else

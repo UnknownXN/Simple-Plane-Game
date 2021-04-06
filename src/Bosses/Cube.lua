@@ -3,6 +3,9 @@ function Cube:init(player)
     self.width = 100
     self.height = 100
     self.startingY = 50
+
+    self.y = -self.width
+    Timer.tween(1, {[self] = {y = self.startingY}})
     self.y = self.startingY
     self.x = VIRTUAL_WIDTH / 2 - 0.5 * self.width
     self.dy = 0
