@@ -15,8 +15,10 @@ Where the main gameplay takes place. You dodge asteroids, use power ups, and col
 
 ### BossState
 A boss will pop up here. Doesn't have to be in a separate state, but is so anyway so it'll be easier to add more bosses.
-<img src="/readme_img/boss.png" alt="Boss" width="300"/> <img src="/readme_img/boss2.png" alt="Boss" width="300"/>
-
+<p float="left">
+  <img src="/readme_img/boss.png" alt="Boss" width="300"/> 
+  <img src="/readme_img/boss2.png" alt="Boss" width="300"/>
+</p>
 ### ShopState 
 After collecting a number of coins, you can buy permanent power ups here.
 <img src="/readme_img/shop.png" alt="Shop" width="600"/>
