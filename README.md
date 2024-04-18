@@ -5,26 +5,32 @@
 This game has a total of 6 game states.
 ### StartState
 You can choose what you want to do here, if you want to start the game or choose a different spacecraft. 
+
 <img src="/readme_img/start_menu.png" alt="Start" width="600"/>
 ### CraftSelectState
 You can choose the color of your spacecraft here. 
+
 <img src="/readme_img/plane_selection_1.png" alt="Plane Selection" width="300"/> <img src="/readme_img/plane_selection_2.png" alt="Plane Selection" width="300"/>
 ### PlayState
 Where the main gameplay takes place. You dodge asteroids, use power ups, and collect coins and points here. Coins can be used in the shop, while points will give you a live in multiples of a certain amount (say after 10000 points)
+
 <img src="/readme_img/power_up.png" alt="Play" width="600"/>
 
 ### BossState
 A boss will pop up here. Doesn't have to be in a separate state, but is so anyway so it'll be easier to add more bosses.
+
 <p float="left">
   <img src="/readme_img/boss.png" alt="Boss" width="300"/> 
   <img src="/readme_img/boss2.png" alt="Boss" width="300"/>
 </p>
 ### ShopState 
 After collecting a number of coins, you can buy permanent power ups here.
+
 <img src="/readme_img/shop.png" alt="Shop" width="600"/>
 
 ### EndState
 Displays what you have collected and reached. Your distance traveled, points, and coins.
+
 <img src="/readme_img/end_screen.png" alt="End" width="600"/>
 
 ## Features Implemented
